@@ -1,6 +1,47 @@
 {
   "openapi": "3.0.0",
-  "paths": {},
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "HealthController_checkHealth",
+        "summary": "检查服务是否正常运行",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "服务正常",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "ok",
+                    "timestamp": "2025-01-01T00:00:00.000Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "健康检查"
+        ]
+      }
+    },
+    "/health/ping": {
+      "get": {
+        "operationId": "HealthController_ping",
+        "summary": "简单连通性检查",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "返回 pong"
+          }
+        },
+        "tags": [
+          "健康检查"
+        ]
+      }
+    }
+  },
   "info": {
     "title": "背书记忆 API",
     "description": "Agent 背书记忆项目接口文档",
