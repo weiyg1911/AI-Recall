@@ -1,0 +1,14 @@
+{
+  "name": "memorize",
+  "private": true,
+  "packageManager": "pnpm@8.15.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "generate:api": "pnpm --filter @memorize/api-client generate"
+  },
+  "devDependencies": {
+    "turbo": "latest"
+  }
+}

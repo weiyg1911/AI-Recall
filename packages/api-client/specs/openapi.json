@@ -1,0 +1,22 @@
+{
+  "openapi": "3.0.0",
+  "paths": {},
+  "info": {
+    "title": "背书记忆 API",
+    "description": "Agent 背书记忆项目接口文档",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {}
+  }
+}

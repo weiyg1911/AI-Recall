@@ -1,0 +1,14 @@
+{
+  "name": "@memorize/api-client",
+  "version": "0.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "generate": "openapi-ts",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "latest",
+    "typescript": "^5.0.0"
+  }
+}
