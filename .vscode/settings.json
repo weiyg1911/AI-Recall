@@ -1,0 +1,25 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+    // 在 VS Code 1.85 版本之前，这里的值要改为 "source.fixAll.eslint": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.words": [
+    "ellipsize",
+    "flatlist",
+    "navigations",
+    "rneui",
+    "Swiper",
+    "toastify",
+    "xverse",
+    "zhongyue"
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
+  // 添加你项目自己的语言配置，比如 javascriptreact、typescriptreact 等
+}

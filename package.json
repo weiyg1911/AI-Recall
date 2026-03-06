@@ -9,6 +9,7 @@
     "generate:api": "pnpm --filter @memorize/api-client generate"
   },
   "devDependencies": {
+    "prettier": "^3.8.1",
     "turbo": "latest"
   }
 }
