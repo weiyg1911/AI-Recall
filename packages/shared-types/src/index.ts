@@ -1,3 +1,5 @@
+export * from './auth';
+
 export interface Card {
   id: string;
   front: string;

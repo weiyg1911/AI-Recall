@@ -13,11 +13,13 @@ async function bootstrap() {
     throw err;
   }
 
-  app.enableCors({ origin: ['http://localhost:3001', 'http://127.0.0.1:3001'] });
+  app.enableCors({
+    origin: ['http://localhost:3001', 'http://127.0.0.1:3001'],
+  });
 
   const config = new DocumentBuilder()
     .setTitle('背书记忆 API')
-    .setDescription('健康检查及业务接口 · Agent 背书记忆项目')
+    .setDescription('Agent 背书记忆项目接口文档')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
