@@ -1,0 +1,13 @@
+node_modules
+.next
+.expo
+dist
+.git
+*.log
+.env
+.env.*
+!.env.example
+coverage
+.turbo
+*.md
+!README.md

@@ -31,6 +31,24 @@ pnpm --filter mobile dev
 - 后端默认：http://localhost:3002，Swagger 文档：http://localhost:3002/api-docs
 - Web 默认：http://localhost:3001
 
+### 本地开发：Docker 只跑 Redis + MongoDB，后端本机跑（热更新）
+
+```bash
+# 1. 启动 Redis、MongoDB
+pnpm db:up
+# 或：docker compose up -d
+
+# 2. 本机跑后端（需设置连接地址，或使用下方 .env）
+pnpm --filter backend dev
+```
+
+后端连接宿主机上的 Redis/MongoDB 时，需设置环境变量（可在 `apps/backend` 下建 `.env`，不要提交）：
+
+- `REDIS_URL=redis://localhost:6379`
+- `MONGODB_URI=mongodb://localhost:27017/memorize`
+
+停止数据库：`pnpm db:down` 或 `docker compose down`。
+
 📄 **开发说明**：接口开发流程、前后端并行开发、公共类型放置约定见 [docs/API与前端开发指南.md](docs/API与前端开发指南.md)。
 
 ---

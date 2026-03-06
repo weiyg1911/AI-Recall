@@ -6,7 +6,9 @@
     "dev": "turbo dev",
     "build": "pnpm run generate:api && turbo build",
     "lint": "turbo lint",
-    "generate:api": "pnpm --filter @memorize/api-client generate"
+    "generate:api": "pnpm --filter @memorize/api-client generate",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
   },
   "devDependencies": {
     "prettier": "^3.8.1",
