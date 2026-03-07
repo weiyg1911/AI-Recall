@@ -1,12 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EmailService } from 'src/email/email.service';
+import { REDIS_EXPIRE_TIME, REDIS_KEY_PREFIX } from 'src/redis/redis.constants';
+import { REDIS_CLIENT, RedisClient } from 'src/redis/redis.provider';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly emailService: EmailService) {}
+  constructor(
+    @Inject(REDIS_CLIENT) private readonly redis: RedisClient,
+    private readonly emailService: EmailService,
+  ) {}
 
   async sendOtp(email: string) {
     try {
+      const code = Math.floor(100000 + Math.random() * 900000);
+      await this.redis.set(
+        REDIS_KEY_PREFIX + email,
+        code,
+        'EX',
+        REDIS_EXPIRE_TIME,
+      );
       await this.emailService.sendEmail({
         to: email,
         subject: '欢迎加入我们的平台！',
@@ -15,10 +27,9 @@ export class AuthService {
           // 传递给模板的上下文变量
           name: '新用户',
           platform: 'ai-recall',
-          code: '123456',
+          code: code,
         },
       });
-      console.log(`欢迎邮件已成功发送至 ${email}`);
       return true;
     } catch (error) {
       console.error('发送邮件失败:', error);
@@ -27,7 +38,12 @@ export class AuthService {
     }
   }
 
-  verifyOtp(email: string, code: string) {
-    return true;
+  async verifyOtp(email: string, code: string) {
+    const cachedCode = await this.redis.get(REDIS_KEY_PREFIX + email);
+    if (cachedCode === code) {
+      await this.redis.del(REDIS_KEY_PREFIX + email);
+      return true;
+    }
+    return false;
   }
 }

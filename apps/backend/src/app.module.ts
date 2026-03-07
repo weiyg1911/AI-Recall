@@ -6,8 +6,11 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './common/config/configuration';
+import { RedisModule } from './redis/redis.module'; // 导入 RedisModule
+
 @Module({
   imports: [
+    RedisModule,
     AuthModule,
     ConfigModule.forRoot({
       load: [configuration], // 加载自定义配置
