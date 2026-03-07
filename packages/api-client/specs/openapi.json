@@ -40,6 +40,71 @@
           "健康检查"
         ]
       }
+    },
+    "/auth/send-otp": {
+      "post": {
+        "operationId": "AuthController_sendOtp",
+        "summary": "发送验证码",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOtpDto"
+              },
+              "examples": {
+                "example1": {
+                  "value": {
+                    "email": "123@123.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "返回验证码"
+          }
+        },
+        "tags": [
+          "认证"
+        ]
+      }
+    },
+    "/auth/verify-otp": {
+      "post": {
+        "operationId": "AuthController_verifyOtp",
+        "summary": "验证邮箱验证码",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyOtpDto"
+              },
+              "examples": {
+                "example1": {
+                  "value": {
+                    "email": "123@123.com",
+                    "code": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "返回验证结果"
+          }
+        },
+        "tags": [
+          "认证"
+        ]
+      }
     }
   },
   "info": {
@@ -58,6 +123,39 @@
         "type": "http"
       }
     },
-    "schemas": {}
+    "schemas": {
+      "SendOtpDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "邮箱地址"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "VerifyOtpDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "邮箱地址"
+          },
+          "code": {
+            "type": "string",
+            "example": "123456",
+            "description": "验证码"
+          }
+        },
+        "required": [
+          "email",
+          "code"
+        ]
+      }
+    }
   }
 }

@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerPingData, HealthControllerPingResponses } from './types.gen';
+import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerPingData, HealthControllerPingResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -27,3 +27,13 @@ export const healthControllerCheckHealth = <ThrowOnError extends boolean = false
  * 简单连通性检查
  */
 export const healthControllerPing = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerPingData, ThrowOnError>) => (options?.client ?? client).get<HealthControllerPingResponses, unknown, ThrowOnError>({ url: '/health/ping', ...options });
+
+/**
+ * 发送验证码
+ */
+export const authControllerSendOtp = <ThrowOnError extends boolean = false>(options?: Options<AuthControllerSendOtpData, ThrowOnError>) => (options?.client ?? client).post<AuthControllerSendOtpResponses, unknown, ThrowOnError>({ url: '/auth/send-otp', ...options });
+
+/**
+ * 验证邮箱验证码
+ */
+export const authControllerVerifyOtp = <ThrowOnError extends boolean = false>(options?: Options<AuthControllerVerifyOtpData, ThrowOnError>) => (options?.client ?? client).post<AuthControllerVerifyOtpResponses, unknown, ThrowOnError>({ url: '/auth/verify-otp', ...options });

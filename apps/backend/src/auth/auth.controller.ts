@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Post } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { SendOtpDto, VerifyOtpDto } from '@memorize/shared-types';
 import { AuthService } from './auth.service';
 
@@ -10,6 +10,14 @@ export class AuthController {
 
   @Post('send-otp')
   @ApiOperation({ summary: '发送验证码' })
+  @ApiBody({
+    type: SendOtpDto,
+    examples: {
+      example1: {
+        value: { email: '123@123.com' },
+      },
+    },
+  })
   @ApiResponse({ status: 200, description: '返回验证码' })
   sendOtp(@Body() body: SendOtpDto) {
     return this.authService.sendOtp(body.email);
@@ -17,6 +25,14 @@ export class AuthController {
 
   @Post('verify-otp')
   @ApiOperation({ summary: '验证邮箱验证码' })
+  @ApiBody({
+    type: VerifyOtpDto,
+    examples: {
+      example1: {
+        value: { email: '123@123.com', code: '123456' },
+      },
+    },
+  })
   @ApiResponse({ status: 200, description: '返回验证结果' })
   verifyOtp(@Body() body: VerifyOtpDto) {
     return this.authService.verifyOtp(body.email, body.code);

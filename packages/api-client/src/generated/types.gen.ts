@@ -31,3 +31,31 @@ export type HealthControllerPingResponses = {
      */
     200: unknown;
 };
+
+export type AuthControllerSendOtpData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/send-otp';
+};
+
+export type AuthControllerSendOtpResponses = {
+    /**
+     * 返回验证码
+     */
+    200: unknown;
+};
+
+export type AuthControllerVerifyOtpData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/verify-otp';
+};
+
+export type AuthControllerVerifyOtpResponses = {
+    /**
+     * 返回验证结果
+     */
+    200: unknown;
+};
