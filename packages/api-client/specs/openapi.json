@@ -41,7 +41,7 @@
         ]
       }
     },
-    "/health/time": {
+    "/health/authTime": {
       "get": {
         "operationId": "HealthController_getServerTime",
         "summary": "获取服务器时间",

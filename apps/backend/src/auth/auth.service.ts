@@ -2,23 +2,20 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EmailService } from 'src/email/email.service';
 import { REDIS_EXPIRE_TIME, REDIS_KEY_PREFIX } from 'src/redis/redis.constants';
 import { REDIS_CLIENT, RedisClient } from 'src/redis/redis.provider';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(REDIS_CLIENT) private readonly redis: RedisClient,
     private readonly emailService: EmailService,
+    private readonly userService: UserService,
   ) {}
 
   async sendOtp(email: string) {
     try {
       const code = Math.floor(100000 + Math.random() * 900000);
-      await this.redis.set(
-        REDIS_KEY_PREFIX + email,
-        code,
-        'EX',
-        REDIS_EXPIRE_TIME,
-      );
+      await this.redis.set(REDIS_KEY_PREFIX + email, code, 'EX', REDIS_EXPIRE_TIME);
       await this.emailService.sendEmail({
         to: email,
         subject: '欢迎加入我们的平台！',
@@ -30,6 +27,7 @@ export class AuthService {
           code: code,
         },
       });
+      console.log('1111发送邮件成功');
       return true;
     } catch (error) {
       console.error('发送邮件失败:', error);
@@ -41,6 +39,10 @@ export class AuthService {
   async verifyOtp(email: string, code: string) {
     const cachedCode = await this.redis.get(REDIS_KEY_PREFIX + email);
     if (cachedCode === code) {
+      const user = await this.userService.getUserByEmail(email);
+      if (!user) {
+        await this.userService.createUser(email);
+      }
       await this.redis.del(REDIS_KEY_PREFIX + email);
       return true;
     }

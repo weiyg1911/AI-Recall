@@ -31,7 +31,7 @@ export const healthControllerPing = <ThrowOnError extends boolean = false>(optio
 /**
  * 获取服务器时间
  */
-export const healthControllerGetServerTime = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerGetServerTimeData, ThrowOnError>) => (options?.client ?? client).get<HealthControllerGetServerTimeResponses, unknown, ThrowOnError>({ url: '/health/time', ...options });
+export const healthControllerGetServerTime = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerGetServerTimeData, ThrowOnError>) => (options?.client ?? client).get<HealthControllerGetServerTimeResponses, unknown, ThrowOnError>({ url: '/health/authTime', ...options });
 
 /**
  * 发送验证码

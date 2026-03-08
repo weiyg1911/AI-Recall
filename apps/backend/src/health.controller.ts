@@ -29,4 +29,11 @@ export class HealthController {
   ping() {
     return 'pong';
   }
+
+  @Get('authTime')
+  @ApiOperation({ summary: '获取服务器时间' })
+  @ApiResponse({ status: 200, description: '返回服务器时间' })
+  getServerTime() {
+    return new Date().toISOString();
+  }
 }

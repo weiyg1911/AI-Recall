@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './common/config/configuration';
 import { RedisModule } from './redis/redis.module'; // 导入 RedisModule
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -36,6 +37,11 @@ import { RedisModule } from './redis/redis.module'; // 导入 RedisModule
           strict: true, // 启用严格模式
         },
       },
+    }),
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: configuration().database.uri,
+      }),
     }),
   ],
   controllers: [HealthController],

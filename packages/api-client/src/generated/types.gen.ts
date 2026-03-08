@@ -54,7 +54,7 @@ export type HealthControllerGetServerTimeData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/health/time';
+    url: '/health/authTime';
 };
 
 export type HealthControllerGetServerTimeResponses = {
