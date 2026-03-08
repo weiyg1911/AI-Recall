@@ -41,6 +41,21 @@
         ]
       }
     },
+    "/health/time": {
+      "get": {
+        "operationId": "HealthController_getServerTime",
+        "summary": "获取服务器时间",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "返回服务器时间"
+          }
+        },
+        "tags": [
+          "健康检查"
+        ]
+      }
+    },
     "/auth/send-otp": {
       "post": {
         "operationId": "AuthController_sendOtp",

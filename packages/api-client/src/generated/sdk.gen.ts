@@ -2,94 +2,57 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type {
-  AuthControllerSendOtpData,
-  AuthControllerSendOtpResponses,
-  AuthControllerVerifyOtpData,
-  AuthControllerVerifyOtpResponses,
-  HealthControllerCheckHealthData,
-  HealthControllerCheckHealthResponses,
-  HealthControllerPingData,
-  HealthControllerPingResponses,
-} from './types.gen';
+import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses } from './types.gen';
 
-export type Options<
-  TData extends TDataShape = TDataShape,
-  ThrowOnError extends boolean = boolean,
-> = Options2<TData, ThrowOnError> & {
-  /**
-   * You can provide a client instance returned by `createClient()` instead of
-   * individual options. This might be also useful if you want to implement a
-   * custom client.
-   */
-  client?: Client;
-  /**
-   * You can pass arbitrary values through the `meta` object. This can be
-   * used to access values that aren't defined as part of the SDK function.
-   */
-  meta?: Record<string, unknown>;
+export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
+    /**
+     * You can provide a client instance returned by `createClient()` instead of
+     * individual options. This might be also useful if you want to implement a
+     * custom client.
+     */
+    client?: Client;
+    /**
+     * You can pass arbitrary values through the `meta` object. This can be
+     * used to access values that aren't defined as part of the SDK function.
+     */
+    meta?: Record<string, unknown>;
 };
 
 /**
  * 检查服务是否正常运行
  */
-export const healthControllerCheckHealth = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<HealthControllerCheckHealthData, ThrowOnError>,
-) =>
-  (options?.client ?? client).get<
-    HealthControllerCheckHealthResponses,
-    unknown,
-    ThrowOnError
-  >({ url: '/health', ...options });
+export const healthControllerCheckHealth = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerCheckHealthData, ThrowOnError>) => (options?.client ?? client).get<HealthControllerCheckHealthResponses, unknown, ThrowOnError>({ url: '/health', ...options });
 
 /**
  * 简单连通性检查
  */
-export const healthControllerPing = <ThrowOnError extends boolean = false>(
-  options?: Options<HealthControllerPingData, ThrowOnError>,
-) =>
-  (options?.client ?? client).get<
-    HealthControllerPingResponses,
-    unknown,
-    ThrowOnError
-  >({ url: '/health/ping', ...options });
+export const healthControllerPing = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerPingData, ThrowOnError>) => (options?.client ?? client).get<HealthControllerPingResponses, unknown, ThrowOnError>({ url: '/health/ping', ...options });
+
+/**
+ * 获取服务器时间
+ */
+export const healthControllerGetServerTime = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerGetServerTimeData, ThrowOnError>) => (options?.client ?? client).get<HealthControllerGetServerTimeResponses, unknown, ThrowOnError>({ url: '/health/time', ...options });
 
 /**
  * 发送验证码
  */
-export const authControllerSendOtp = <ThrowOnError extends boolean = false>(
-  options: Options<AuthControllerSendOtpData, ThrowOnError>,
-) =>
-  (options.client ?? client).post<
-    AuthControllerSendOtpResponses,
-    unknown,
-    ThrowOnError
-  >({
+export const authControllerSendOtp = <ThrowOnError extends boolean = false>(options: Options<AuthControllerSendOtpData, ThrowOnError>) => (options.client ?? client).post<AuthControllerSendOtpResponses, unknown, ThrowOnError>({
     url: '/auth/send-otp',
     ...options,
     headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  });
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * 验证邮箱验证码
  */
-export const authControllerVerifyOtp = <ThrowOnError extends boolean = false>(
-  options: Options<AuthControllerVerifyOtpData, ThrowOnError>,
-) =>
-  (options.client ?? client).post<
-    AuthControllerVerifyOtpResponses,
-    unknown,
-    ThrowOnError
-  >({
+export const authControllerVerifyOtp = <ThrowOnError extends boolean = false>(options: Options<AuthControllerVerifyOtpData, ThrowOnError>) => (options.client ?? client).post<AuthControllerVerifyOtpResponses, unknown, ThrowOnError>({
     url: '/auth/verify-otp',
     ...options,
     headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  });
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
