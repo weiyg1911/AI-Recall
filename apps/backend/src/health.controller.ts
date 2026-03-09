@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
 
 @ApiTags('健康检查')
 @Controller('health')
@@ -33,6 +34,7 @@ export class HealthController {
   @Get('authTime')
   @ApiOperation({ summary: '获取服务器时间' })
   @ApiResponse({ status: 200, description: '返回服务器时间' })
+  @UseGuards(JwtAuthGuard)
   getServerTime() {
     return new Date().toISOString();
   }

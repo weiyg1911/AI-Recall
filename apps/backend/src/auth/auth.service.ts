@@ -3,6 +3,7 @@ import { EmailService } from 'src/email/email.service';
 import { REDIS_EXPIRE_TIME, REDIS_KEY_PREFIX } from 'src/redis/redis.constants';
 import { REDIS_CLIENT, RedisClient } from 'src/redis/redis.provider';
 import { UserService } from 'src/user/user.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -10,6 +11,7 @@ export class AuthService {
     @Inject(REDIS_CLIENT) private readonly redis: RedisClient,
     private readonly emailService: EmailService,
     private readonly userService: UserService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async sendOtp(email: string) {
@@ -39,13 +41,20 @@ export class AuthService {
   async verifyOtp(email: string, code: string) {
     const cachedCode = await this.redis.get(REDIS_KEY_PREFIX + email);
     if (cachedCode === code) {
-      const user = await this.userService.getUserByEmail(email);
+      let user = await this.userService.getUserByEmail(email);
       if (!user) {
-        await this.userService.createUser(email);
+        user = await this.userService.createUser(email);
       }
       await this.redis.del(REDIS_KEY_PREFIX + email);
-      return true;
+      const payload = { userId: user._id, username: user.username, email: user.email };
+      const token = this.jwtService.sign(payload);
+      return {
+        result: true,
+        token,
+      };
     }
-    return false;
+    return {
+      result: false,
+    };
   }
 }

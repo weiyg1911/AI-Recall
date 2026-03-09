@@ -8,11 +8,12 @@ import {
   type VerifyOtpDto,
 } from '@memorize/api-client';
 import { apiClient } from '@/lib/api';
+import { setToken } from '@/lib/auth';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
-  const [codeSent, setCodeSent] = useState(false);
+  const [_codeSent, setCodeSent] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [loading, setLoading] = useState<'send' | 'login' | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -68,11 +69,12 @@ export default function LoginPage() {
     setLoading('login');
     try {
       const body: VerifyOtpDto = { email: trimmedEmail, code: trimmedCode };
-      await authControllerVerifyOtp({
+      const data = (await authControllerVerifyOtp({
         client: apiClient,
         body,
         throwOnError: true,
-      });
+      })) as unknown as { result: boolean; token?: string };
+      if (data?.token) setToken(data.token);
       setSuccess('登录成功');
     } catch (e) {
       setError(e instanceof Error ? e.message : '验证码错误或已过期');
@@ -103,9 +105,7 @@ export default function LoginPage() {
           boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
         }}
       >
-        <h1 style={{ marginBottom: 24, fontSize: 22, fontWeight: 600 }}>
-          登录
-        </h1>
+        <h1 style={{ marginBottom: 24, fontSize: 22, fontWeight: 600 }}>登录</h1>
 
         <label style={{ display: 'block', marginBottom: 6, fontSize: 14, color: '#333' }}>
           邮箱
@@ -184,15 +184,13 @@ export default function LoginPage() {
           {loading === 'login' ? '登录中…' : '登录'}
         </button>
 
-        {error && (
-          <p style={{ marginTop: 16, color: '#c00', fontSize: 14 }}>{error}</p>
-        )}
-        {success && (
-          <p style={{ marginTop: 16, color: '#0a0', fontSize: 14 }}>{success}</p>
-        )}
+        {error && <p style={{ marginTop: 16, color: '#c00', fontSize: 14 }}>{error}</p>}
+        {success && <p style={{ marginTop: 16, color: '#0a0', fontSize: 14 }}>{success}</p>}
 
         <p style={{ marginTop: 24, fontSize: 13, color: '#888' }}>
-          <a href="/" style={{ color: '#666' }}>返回首页</a>
+          <a href="/" style={{ color: '#666' }}>
+            返回首页
+          </a>
         </p>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './common/config/configuration';
 import { RedisModule } from './redis/redis.module'; // 导入 RedisModule
 import { MongooseModule } from '@nestjs/mongoose';
+import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -42,6 +43,20 @@ import { MongooseModule } from '@nestjs/mongoose';
       useFactory: () => ({
         uri: configuration().database.uri,
       }),
+    }),
+    // 配置Jwt的Module
+    JwtModule.registerAsync({
+      imports: [],
+      inject: [],
+      useFactory: () => {
+        return {
+          secret: configuration().jwt.secret,
+          signOptions: {
+            expiresIn: configuration().jwt.expiresIn, // Token 过期时间
+          } as JwtModuleOptions['signOptions'],
+        };
+      },
+      global: true, // 全局模块，任何地方都能用
     }),
   ],
   controllers: [HealthController],
