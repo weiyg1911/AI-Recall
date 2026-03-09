@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses } from './types.gen';
+import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -50,6 +50,15 @@ export const authControllerSendOtp = <ThrowOnError extends boolean = false>(opti
  */
 export const authControllerVerifyOtp = <ThrowOnError extends boolean = false>(options: Options<AuthControllerVerifyOtpData, ThrowOnError>) => (options.client ?? client).post<AuthControllerVerifyOtpResponses, unknown, ThrowOnError>({
     url: '/auth/verify-otp',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const knowledgeControllerCreateKnowledge = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerCreateKnowledgeData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerCreateKnowledgeResponses, unknown, ThrowOnError>({
+    url: '/knowledge/create',
     ...options,
     headers: {
         'Content-Type': 'application/json',

@@ -22,6 +22,13 @@ export type VerifyOtpDto = {
     code: string;
 };
 
+export type CreateKnowledgeDto = {
+    /**
+     * 知识点名称
+     */
+    content: string;
+};
+
 export type HealthControllerCheckHealthData = {
     body?: never;
     path?: never;
@@ -90,4 +97,15 @@ export type AuthControllerVerifyOtpResponses = {
      * 返回验证结果
      */
     200: unknown;
+};
+
+export type KnowledgeControllerCreateKnowledgeData = {
+    body: CreateKnowledgeDto;
+    path?: never;
+    query?: never;
+    url: '/knowledge/create';
+};
+
+export type KnowledgeControllerCreateKnowledgeResponses = {
+    201: unknown;
 };

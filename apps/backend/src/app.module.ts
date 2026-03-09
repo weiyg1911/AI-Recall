@@ -9,11 +9,13 @@ import configuration from './common/config/configuration';
 import { RedisModule } from './redis/redis.module'; // 导入 RedisModule
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
+import { KnowledgeModule } from './knowledge/konowledge.module';
 
 @Module({
   imports: [
     RedisModule,
     AuthModule,
+    KnowledgeModule,
     ConfigModule.forRoot({
       load: [configuration], // 加载自定义配置
       isGlobal: true, // 可选，设为全局后无需在每个模块重复导入

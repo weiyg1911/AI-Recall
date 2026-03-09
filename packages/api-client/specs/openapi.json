@@ -21,9 +21,7 @@
             }
           }
         },
-        "tags": [
-          "健康检查"
-        ]
+        "tags": ["健康检查"]
       }
     },
     "/health/ping": {
@@ -36,9 +34,7 @@
             "description": "返回 pong"
           }
         },
-        "tags": [
-          "健康检查"
-        ]
+        "tags": ["健康检查"]
       }
     },
     "/health/authTime": {
@@ -51,9 +47,7 @@
             "description": "返回服务器时间"
           }
         },
-        "tags": [
-          "健康检查"
-        ]
+        "tags": ["健康检查"]
       }
     },
     "/auth/send-otp": {
@@ -83,9 +77,7 @@
             "description": "返回验证码"
           }
         },
-        "tags": [
-          "认证"
-        ]
+        "tags": ["认证"]
       }
     },
     "/auth/verify-otp": {
@@ -116,9 +108,29 @@
             "description": "返回验证结果"
           }
         },
-        "tags": [
-          "认证"
-        ]
+        "tags": ["认证"]
+      }
+    },
+    "/knowledge/create": {
+      "post": {
+        "operationId": "KnowledgeController_createKnowledge",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateKnowledgeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["知识点管理"]
       }
     }
   },
@@ -148,9 +160,7 @@
             "description": "邮箱地址"
           }
         },
-        "required": [
-          "email"
-        ]
+        "required": ["email"]
       },
       "VerifyOtpDto": {
         "type": "object",
@@ -166,10 +176,18 @@
             "description": "验证码"
           }
         },
-        "required": [
-          "email",
-          "code"
-        ]
+        "required": ["email", "code"]
+      },
+      "CreateKnowledgeDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "example": "不到长城非好汉",
+            "description": "知识点名称"
+          }
+        },
+        "required": ["content"]
       }
     }
   }
