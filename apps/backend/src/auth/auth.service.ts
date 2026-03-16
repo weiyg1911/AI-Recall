@@ -29,7 +29,6 @@ export class AuthService {
           code: code,
         },
       });
-      console.log('1111发送邮件成功');
       return true;
     } catch (error) {
       console.error('发送邮件失败:', error);

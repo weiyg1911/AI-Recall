@@ -7,12 +7,45 @@ import { apiClient, getAuthHeaders } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { clearToken } from '@/lib/auth';
 
+interface InfoItem {
+  type: 'text' | 'cloze';
+  content: string;
+  id: string;
+}
+
 interface Knowledge {
   id: string;
   title: string;
-  summary: string;
-  tag: string;
-  updateTime: string;
+  infoList: InfoItem[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 渲染 infoList 内容，cloze 类型显示带下划线
+function renderInfoList(infoList: InfoItem[]) {
+  return (
+    <span>
+      {infoList.map((item) => (
+        <span
+          key={item.id}
+          style={
+            item.type === 'cloze'
+              ? {
+                  borderBottom: '2px solid var(--primary)',
+                  paddingBottom: '2px',
+                  margin: '0 2px',
+                  color: 'var(--foreground)',
+                }
+              : {
+                  color: 'var(--muted-foreground)',
+                }
+          }
+        >
+          {item.content}
+        </span>
+      ))}
+    </span>
+  );
 }
 
 interface PaginationData {
@@ -40,21 +73,14 @@ export default function KnowledgeListPage() {
       const response = (await knowledgeControllerGetKnowledgeList({
         client: apiClient,
         headers: getAuthHeaders(),
-      })) as unknown as {
-        list?: Knowledge[];
-        total?: number;
-        page?: number;
-        pageSize?: number;
-      };
-
-      setKnowledgeList(response.list || []);
+      })) as unknown as Knowledge[];
+      setKnowledgeList(response || []);
       setPagination({
-        total: response.total || 0,
-        page: response.page || 1,
-        pageSize: response.pageSize || 10,
+        total: response?.length || 0,
+        page: 1,
+        pageSize: 10,
       });
     } catch (error) {
-      console.error('获取知识点列表失败:', error);
       // 如果是认证错误，清除token并跳转到登录页
       if (error instanceof Error && error.message.includes('401')) {
         clearToken();
@@ -80,6 +106,11 @@ export default function KnowledgeListPage() {
   const handlePageSizeChange = (pageSize: number) => {
     setPagination((prev) => ({ ...prev, pageSize, page: 1 }));
     fetchKnowledgeList(1);
+  };
+
+  // 处理刷新按钮点击
+  const handleRefresh = () => {
+    fetchKnowledgeList(pagination.page);
   };
 
   // 处理新建按钮点击
@@ -169,9 +200,39 @@ export default function KnowledgeListPage() {
         className="flex items-center justify-between px-8 py-6 border-b"
         style={{ borderColor: 'var(--border)' }}
       >
-        <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
-          知识点列表
-        </h1>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleRefresh}
+            disabled={loading}
+            className="p-2 rounded-md transition-opacity hover:opacity-90 disabled:opacity-50"
+            style={{
+              background: 'var(--secondary)',
+              color: 'var(--secondary-foreground)',
+            }}
+            title="刷新列表"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={loading ? 'animate-spin' : ''}
+            >
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+              <path d="M16 16h5v5" />
+            </svg>
+          </button>
+          <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
+            知识点列表
+          </h1>
+        </div>
         <div className="flex gap-3">
           <button
             onClick={handleNewKnowledge}
@@ -243,19 +304,13 @@ export default function KnowledgeListPage() {
                 </div>
                 <div
                   className="text-sm font-semibold"
-                  style={{ width: '320px', color: 'var(--foreground)' }}
+                  style={{ flex: 1, color: 'var(--foreground)' }}
                 >
-                  内容摘要
+                  内容
                 </div>
                 <div
                   className="text-sm font-semibold"
-                  style={{ width: '100px', color: 'var(--foreground)' }}
-                >
-                  标签
-                </div>
-                <div
-                  className="text-sm font-semibold"
-                  style={{ width: '120px', color: 'var(--foreground)' }}
+                  style={{ width: '180px', color: 'var(--foreground)' }}
                 >
                   更新时间
                 </div>
@@ -274,32 +329,23 @@ export default function KnowledgeListPage() {
                   className="flex items-center gap-4 px-4 py-3 border-b last:border-b-0"
                   style={{ borderColor: 'var(--border)' }}
                 >
-                  <div className="text-sm" style={{ width: '200px', color: 'var(--foreground)' }}>
+                  <div
+                    className="text-sm font-medium"
+                    style={{ width: '200px', color: 'var(--foreground)' }}
+                  >
                     {knowledge.title}
                   </div>
                   <div
-                    className="text-sm truncate"
-                    style={{
-                      width: '320px',
-                      color: 'var(--muted-foreground)',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
+                    className="text-sm"
+                    style={{ flex: 1, color: 'var(--foreground)', lineHeight: '1.8' }}
                   >
-                    {knowledge.summary}
+                    {renderInfoList(knowledge.infoList)}
                   </div>
                   <div
                     className="text-sm"
-                    style={{ width: '100px', color: 'var(--muted-foreground)' }}
+                    style={{ width: '180px', color: 'var(--muted-foreground)' }}
                   >
-                    {knowledge.tag}
-                  </div>
-                  <div
-                    className="text-sm"
-                    style={{ width: '120px', color: 'var(--muted-foreground)' }}
-                  >
-                    {knowledge.updateTime}
+                    {new Date(knowledge.updatedAt).toLocaleString('zh-CN')}
                   </div>
                   <div
                     className="text-sm cursor-pointer hover:underline"

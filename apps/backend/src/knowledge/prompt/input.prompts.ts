@@ -11,7 +11,7 @@ export const INPUT_KNOWLEDGE_PROMPT = `
 4. 输出必须是一个有效的JSON数组，不要包含任何额外文字或代码块标记。
 5. 如果输入中没有明显的关键知识点，则返回一个包含整个文本的text项（例如：[{{"type": "text", "content": "整个文本"}}]）。
 6. **严格限制**：type 字段只能是 "text" 或 "cloze"，绝对不能使用其他值（如 "ai"、"markdown"���"summary" 等）。
-7. **错误示例**：不要输出 [{"type": "ai", "content": "..."}] 或 [{"type": "markdown", "content": "..."}] 这种格式。
+7. **错误示例**：不要输出 [{{"type": "ai", "content": "..."}}] 或 [{{"type": "markdown", "content": "..."}}] 这种格式。
 
 ## 示例
 **示例1：单知识点**

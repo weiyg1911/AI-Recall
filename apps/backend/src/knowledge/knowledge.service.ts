@@ -41,42 +41,6 @@ export class KnowledgeService {
     private readonly knowledgeModel: Model<Knowledge>,
   ) {}
 
-  /**
-   * 验证和清理 AI 返回的 infoList 数据
-   * 确保所有 type 值都是有效的枚举值
-   */
-  private validateInfoList(infoList: any): Array<{
-    type: 'text' | 'cloze';
-    content: string;
-  }> {
-    if (!Array.isArray(infoList)) {
-      throw new Error('infoList must be an array');
-    }
-
-    return infoList.map((item, index) => {
-      // 验证基本结构
-      if (!item || typeof item !== 'object') {
-        throw new Error(`infoList[${index}] must be an object`);
-      }
-
-      // 验证必需字段
-      if (!item.content || typeof item.content !== 'string') {
-        throw new Error(`infoList[${index}].content must be a non-empty string`);
-      }
-
-      // 验证并修正 type 字段
-      if (item.type !== 'text' && item.type !== 'cloze') {
-        console.warn(
-          `⚠️  Invalid type "${item.type}" at infoList[${index}], defaulting to "text". ` +
-            `Content: "${item.content.substring(0, 30)}..."`,
-        );
-        return { ...item, type: 'text' as const };
-      }
-
-      return item;
-    });
-  }
-
   private async getKnowledgeTitle(str: string) {
     const dsModal = this.aiService.getDSModal(0.7, 4000);
     const titlePrompts = PromptTemplate.fromTemplate(TITLE_PROMPT);
@@ -88,11 +52,12 @@ export class KnowledgeService {
     return aiRes;
   }
 
-  getKnowledgeList(userId: string) {
-    return this.knowledgeModel.find({
+  async getKnowledgeList(userId: string) {
+    const res = await this.knowledgeModel.find({
       userId,
       isDeleted: false,
     });
+    return res;
   }
 
   async createKnowledge(body: CreateKnowledgeDto, userId: string) {
@@ -106,17 +71,11 @@ export class KnowledgeService {
         }),
         this.getKnowledgeTitle(body.content),
       ]);
-
-      console.debug('infoList', JSON.stringify(infoList));
-      console.debug('title', JSON.stringify(title));
-
-      // 验证和清理 AI 返回的数据
-      const validatedInfoList = this.validateInfoList(infoList);
-
+      const content = JSON.parse(infoList.content as string);
       const newItem = new this.knowledgeModel({
         userId: userId,
-        title: title,
-        infoList: validatedInfoList,
+        title: title.content,
+        infoList: content,
       });
       await newItem.save();
       return {

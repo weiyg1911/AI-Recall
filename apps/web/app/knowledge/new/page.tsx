@@ -41,9 +41,6 @@ export default function NewKnowledgePage() {
         body: { content: fullContent },
         headers: getAuthHeaders(),
       });
-
-      // console.debug('🚗🚗🚗', JSON.stringify(res));
-
       // 等待步骤动画完成
       await stepPromise;
 

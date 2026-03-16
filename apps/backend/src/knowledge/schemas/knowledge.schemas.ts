@@ -40,6 +40,12 @@ export class Knowledge {
     content: string;
   }>;
 
+  @Prop({
+    type: String,
+    required: [true, '标题不能为空'],
+  })
+  title!: string;
+
   // 软删除标记（避免物理删除数据）
   @Prop({ default: false })
   isDeleted!: boolean;
