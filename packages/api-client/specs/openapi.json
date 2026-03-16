@@ -21,7 +21,9 @@
             }
           }
         },
-        "tags": ["健康检查"]
+        "tags": [
+          "健康检查"
+        ]
       }
     },
     "/health/ping": {
@@ -34,7 +36,9 @@
             "description": "返回 pong"
           }
         },
-        "tags": ["健康检查"]
+        "tags": [
+          "健康检查"
+        ]
       }
     },
     "/health/authTime": {
@@ -47,7 +51,9 @@
             "description": "返回服务器时间"
           }
         },
-        "tags": ["健康检查"]
+        "tags": [
+          "健康检查"
+        ]
       }
     },
     "/auth/send-otp": {
@@ -77,7 +83,9 @@
             "description": "返回验证码"
           }
         },
-        "tags": ["认证"]
+        "tags": [
+          "认证"
+        ]
       }
     },
     "/auth/verify-otp": {
@@ -108,12 +116,29 @@
             "description": "返回验证结果"
           }
         },
-        "tags": ["认证"]
+        "tags": [
+          "认证"
+        ]
+      }
+    },
+    "/knowledge": {
+      "post": {
+        "operationId": "KnowledgeController_getKnowledgeList",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "知识点管理"
+        ]
       }
     },
     "/knowledge/create": {
       "post": {
         "operationId": "KnowledgeController_createKnowledge",
+        "summary": "创建知识点",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -121,6 +146,19 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateKnowledgeDto"
+              },
+              "examples": {
+                "example1": {
+                  "value": {
+                    "title": "谚语",
+                    "content": "不到长城非好汉"
+                  }
+                },
+                "example2": {
+                  "value": {
+                    "content": "title 可以为空"
+                  }
+                }
               }
             }
           }
@@ -130,7 +168,9 @@
             "description": ""
           }
         },
-        "tags": ["知识点管理"]
+        "tags": [
+          "知识点管理"
+        ]
       }
     }
   },
@@ -160,7 +200,9 @@
             "description": "邮箱地址"
           }
         },
-        "required": ["email"]
+        "required": [
+          "email"
+        ]
       },
       "VerifyOtpDto": {
         "type": "object",
@@ -176,7 +218,10 @@
             "description": "验证码"
           }
         },
-        "required": ["email", "code"]
+        "required": [
+          "email",
+          "code"
+        ]
       },
       "CreateKnowledgeDto": {
         "type": "object",
@@ -187,7 +232,9 @@
             "description": "知识点名称"
           }
         },
-        "required": ["content"]
+        "required": [
+          "content"
+        ]
       }
     }
   }

@@ -9,6 +9,7 @@ import {
 } from '@memorize/api-client';
 import { apiClient } from '@/lib/api';
 import { setToken } from '@/lib/auth';
+import { useLoginRedirect } from '@/lib/useAuth';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState<'send' | 'login' | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const { handleLoginSuccess } = useLoginRedirect();
 
   const handleSendOtp = async () => {
     const trimmed = email.trim();
@@ -75,7 +77,12 @@ export default function LoginPage() {
         throwOnError: true,
       })) as unknown as { result: boolean; token?: string };
       if (data?.token) setToken(data.token);
-      setSuccess('登录成功');
+      setSuccess('登录成功，正在跳转...');
+
+      // 延迟跳转以显示成功消息
+      setTimeout(() => {
+        handleLoginSuccess();
+      }, 500);
     } catch (e) {
       setError(e instanceof Error ? e.message : '验证码错误或已过期');
     } finally {
@@ -83,54 +90,48 @@ export default function LoginPage() {
     }
   };
 
+  const sendDisabled = loading === 'send' || countdown > 0;
+  const loginDisabled = loading === 'login';
+
   return (
     <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 24,
-        fontFamily: 'system-ui, sans-serif',
-        background: '#f5f5f5',
-      }}
+      className="min-h-screen flex items-center justify-center p-6 font-sans"
+      style={{ background: 'var(--background)' }}
     >
+      {/* formCard: width 400, padding 32, gap 24, rounded 8, shadow, border */}
       <div
+        className="w-full max-w-[400px] rounded-lg flex flex-col gap-6 p-8 border"
         style={{
-          width: '100%',
-          maxWidth: 400,
-          background: '#fff',
-          borderRadius: 12,
-          padding: 32,
+          background: 'var(--card)',
+          borderColor: 'var(--border)',
           boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
         }}
       >
-        <h1 style={{ marginBottom: 24, fontSize: 22, fontWeight: 600 }}>登录</h1>
+        <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
+          登录
+        </h1>
 
-        <label style={{ display: 'block', marginBottom: 6, fontSize: 14, color: '#333' }}>
+        <label className="block mb-1.5 text-sm font-medium" style={{ color: 'var(--foreground)' }}>
           邮箱
         </label>
         <input
           type="email"
-          placeholder="请输入邮箱"
+          placeholder="请输入邮箱地址"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={!!loading}
+          className="w-full h-10 px-3 py-2.5 rounded-md text-sm border box-border disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
           style={{
-            width: '100%',
-            boxSizing: 'border-box',
-            padding: '12px 14px',
-            fontSize: 16,
-            border: '1px solid #ddd',
-            borderRadius: 8,
-            marginBottom: 16,
+            background: 'var(--background)',
+            borderColor: 'var(--border)',
+            color: 'var(--foreground)',
           }}
         />
 
-        <label style={{ display: 'block', marginBottom: 6, fontSize: 14, color: '#333' }}>
+        <label className="block mb-1.5 text-sm font-medium" style={{ color: 'var(--foreground)' }}>
           验证码
         </label>
-        <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+        <div className="flex gap-3">
           <input
             type="text"
             placeholder="请输入验证码"
@@ -138,57 +139,49 @@ export default function LoginPage() {
             onChange={(e) => setCode(e.target.value)}
             disabled={!!loading}
             maxLength={6}
+            className="flex-1 h-10 px-3 py-2.5 rounded-md text-sm border box-border disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
             style={{
-              flex: 1,
-              padding: '12px 14px',
-              fontSize: 16,
-              border: '1px solid #ddd',
-              borderRadius: 8,
+              background: 'var(--background)',
+              borderColor: 'var(--border)',
+              color: 'var(--foreground)',
             }}
           />
           <button
             type="button"
             onClick={handleSendOtp}
-            disabled={loading === 'send' || countdown > 0}
+            disabled={sendDisabled}
+            className="h-10 px-4 py-2.5 rounded-md text-sm font-medium whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-60 transition-opacity"
             style={{
-              padding: '12px 20px',
-              fontSize: 14,
-              whiteSpace: 'nowrap',
-              cursor: countdown > 0 || loading === 'send' ? 'not-allowed' : 'pointer',
-              background: countdown > 0 ? '#ccc' : '#111',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 8,
+              background: 'var(--secondary)',
+              color: 'var(--secondary-foreground)',
             }}
           >
-            {countdown > 0 ? `${countdown}s 后重发` : loading === 'send' ? '发送中…' : '获取验证码'}
+            {countdown > 0 ? `${countdown}s 后重发` : loading === 'send' ? '发送中…' : '发送验证码'}
           </button>
         </div>
+
+        <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
+          验证码将发送至您的邮箱，有效期 5 分钟
+        </p>
 
         <button
           type="button"
           onClick={handleLogin}
-          disabled={loading === 'login'}
+          disabled={loginDisabled}
+          className="w-full h-10 py-2.5 px-6 rounded-md text-sm font-medium disabled:cursor-not-allowed disabled:opacity-70 transition-opacity"
           style={{
-            width: '100%',
-            padding: 14,
-            fontSize: 16,
-            fontWeight: 500,
-            cursor: loading === 'login' ? 'not-allowed' : 'pointer',
-            background: '#111',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 8,
+            background: 'var(--primary)',
+            color: 'var(--primary-foreground)',
           }}
         >
           {loading === 'login' ? '登录中…' : '登录'}
         </button>
 
-        {error && <p style={{ marginTop: 16, color: '#c00', fontSize: 14 }}>{error}</p>}
-        {success && <p style={{ marginTop: 16, color: '#0a0', fontSize: 14 }}>{success}</p>}
+        {error && <p className="text-sm text-red-600">{error}</p>}
+        {success && <p className="text-sm text-green-600">{success}</p>}
 
-        <p style={{ marginTop: 24, fontSize: 13, color: '#888' }}>
-          <a href="/" style={{ color: '#666' }}>
+        <p className="text-[13px] mt-2" style={{ color: 'var(--muted-foreground)' }}>
+          <a href="/" className="hover:underline" style={{ color: 'var(--muted-foreground)' }}>
             返回首页
           </a>
         </p>

@@ -21,4 +21,7 @@ export default () => ({
     secret: process.env.JWT_SECRET || 'secret',
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   },
+  aiModal: {
+    apiKey: process.env.DS_Modal_API_KEY || '<your-ds-modal-api-key>',
+  },
 });

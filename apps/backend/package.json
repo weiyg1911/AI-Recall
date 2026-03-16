@@ -11,6 +11,8 @@
     "lint": "eslint \"{src,test}/**/*.ts\" --fix"
   },
   "dependencies": {
+    "@langchain/core": "^1.1.32",
+    "@langchain/deepseek": "^1.0.17",
     "@memorize/shared-types": "workspace:*",
     "@memorize/utils": "workspace:*",
     "@nestjs-modules/mailer": "^2.0.2",
@@ -23,6 +25,7 @@
     "@nestjs/platform-express": "^11.0.0",
     "@nestjs/swagger": "^7.4.0",
     "ioredis": "^5.10.0",
+    "langchain": "^1.2.32",
     "mongoose": "^9.2.4",
     "nodemailer": "^8.0.1",
     "passport": "^0.7.0",

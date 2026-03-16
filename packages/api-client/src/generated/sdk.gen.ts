@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses } from './types.gen';
+import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses, KnowledgeControllerGetKnowledgeListData, KnowledgeControllerGetKnowledgeListResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -57,6 +57,11 @@ export const authControllerVerifyOtp = <ThrowOnError extends boolean = false>(op
     }
 });
 
+export const knowledgeControllerGetKnowledgeList = <ThrowOnError extends boolean = false>(options?: Options<KnowledgeControllerGetKnowledgeListData, ThrowOnError>) => (options?.client ?? client).post<KnowledgeControllerGetKnowledgeListResponses, unknown, ThrowOnError>({ url: '/knowledge', ...options });
+
+/**
+ * 创建知识点
+ */
 export const knowledgeControllerCreateKnowledge = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerCreateKnowledgeData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerCreateKnowledgeResponses, unknown, ThrowOnError>({
     url: '/knowledge/create',
     ...options,

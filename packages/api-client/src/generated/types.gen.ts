@@ -99,6 +99,17 @@ export type AuthControllerVerifyOtpResponses = {
     200: unknown;
 };
 
+export type KnowledgeControllerGetKnowledgeListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/knowledge';
+};
+
+export type KnowledgeControllerGetKnowledgeListResponses = {
+    201: unknown;
+};
+
 export type KnowledgeControllerCreateKnowledgeData = {
     body: CreateKnowledgeDto;
     path?: never;
