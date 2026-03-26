@@ -4,6 +4,7 @@ import { REDIS_EXPIRE_TIME, REDIS_KEY_PREFIX } from 'src/redis/redis.constants';
 import { REDIS_CLIENT, RedisClient } from 'src/redis/redis.provider';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { WinstonLoggerService } from 'src/common/logger/winston-logger.service';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
     private readonly emailService: EmailService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly loger: WinstonLoggerService,
   ) {}
 
   async sendOtp(email: string) {
@@ -29,9 +31,10 @@ export class AuthService {
           code: code,
         },
       });
+      this.loger.info('发送邮件成功');
       return true;
-    } catch (error) {
-      console.error('发送邮件失败:', error);
+    } catch (err) {
+      this.loger.error('发送邮件失败' + err);
       // 这里可以进行更完善的错误处理，例如抛出异常
       return false;
     }

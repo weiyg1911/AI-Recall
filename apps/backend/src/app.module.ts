@@ -10,9 +10,27 @@ import { RedisModule } from './redis/redis.module'; // 导入 RedisModule
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { KnowledgeModule } from './knowledge/konowledge.module';
+import { WinstonModule } from 'nest-winston';
+import { WinstonLoggerModule } from './common/logger/winston-logger.module';
+import * as winston from 'winston';
+
+import { HttpLoggingInterceptor } from './common/interceptors/http-logging.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggerName } from './common/logger/constants';
 
 @Module({
   imports: [
+    // 替换原有的日志配置
+    WinstonModule.forRoot({
+      format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.simple(),
+        }),
+      ],
+    }),
+    // 导入自己的日志模块
+    WinstonLoggerModule.register(LoggerName.app),
     RedisModule,
     AuthModule,
     KnowledgeModule,
@@ -62,6 +80,12 @@ import { KnowledgeModule } from './knowledge/konowledge.module';
     }),
   ],
   controllers: [HealthController],
-  providers: [],
+  providers: [
+    {
+      // APP_INTERCEPTOR 将拦截器设置为全局
+      provide: APP_INTERCEPTOR,
+      useClass: HttpLoggingInterceptor,
+    },
+  ],
 })
 export class AppModule {}
