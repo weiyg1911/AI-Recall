@@ -17,6 +17,7 @@ import * as winston from 'winston';
 import { HttpLoggingInterceptor } from './common/interceptors/http-logging.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerName } from './common/logger/constants';
+import { HttpWarpperInterceptor } from './common/interceptors/http-warpper.interceptor';
 
 @Module({
   imports: [
@@ -81,6 +82,11 @@ import { LoggerName } from './common/logger/constants';
   ],
   controllers: [HealthController],
   providers: [
+    {
+      // Http包装器
+      provide: APP_INTERCEPTOR,
+      useClass: HttpWarpperInterceptor,
+    },
     {
       // APP_INTERCEPTOR 将拦截器设置为全局
       provide: APP_INTERCEPTOR,
