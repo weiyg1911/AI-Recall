@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { knowledgeControllerCreateKnowledge } from '@memorize/api-client';
-import { apiClient, getAuthHeaders } from '@/lib/api';
+import { knowledgeControllerCreateKnowledge } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 
 type ProcessingStep = 'title' | 'chunk' | 'blank' | 'quiz';
@@ -37,9 +36,7 @@ export default function NewKnowledgePage() {
       // 实际的 API 调用
       const fullContent = title ? `# ${title}\n\n${content}` : content;
       await knowledgeControllerCreateKnowledge({
-        client: apiClient,
         body: { content: fullContent },
-        headers: getAuthHeaders(),
       });
       // 等待步骤动画完成
       await stepPromise;

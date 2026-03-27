@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { knowledgeControllerGetKnowledgeList } from '@memorize/api-client';
-import { apiClient, getAuthHeaders } from '@/lib/api';
+import { knowledgeControllerGetKnowledgeList } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { clearToken } from '@/lib/auth';
 
@@ -70,10 +69,7 @@ export default function KnowledgeListPage() {
   const fetchKnowledgeList = async (_page: number = 1) => {
     setLoading(true);
     try {
-      const response = (await knowledgeControllerGetKnowledgeList({
-        client: apiClient,
-        headers: getAuthHeaders(),
-      })) as unknown as Knowledge[];
+      const response = (await knowledgeControllerGetKnowledgeList()) as unknown as Knowledge[];
       setKnowledgeList(response || []);
       setPagination({
         total: response?.length || 0,

@@ -9,7 +9,7 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,scss,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,css,scss,yml,yaml}\"",
-    "generate:api": "pnpm --filter @memorize/api-client generate",
+    "generate:api": "pnpm --filter @memorize/api-client generate && pnpm --filter web generate:wrappers",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "prepare": "husky"
@@ -26,6 +26,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.3.2",
     "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
     "turbo": "latest"
   }
 }

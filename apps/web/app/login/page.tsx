@@ -6,8 +6,7 @@ import {
   authControllerVerifyOtp,
   type SendOtpDto,
   type VerifyOtpDto,
-} from '@memorize/api-client';
-import { apiClient } from '@/lib/api';
+} from '@/lib/api';
 import { setToken } from '@/lib/auth';
 import { useLoginRedirect } from '@/lib/useAuth';
 
@@ -33,7 +32,6 @@ export default function LoginPage() {
     try {
       const body: SendOtpDto = { email: trimmed };
       await authControllerSendOtp({
-        client: apiClient,
         body,
         throwOnError: true,
       });
@@ -72,7 +70,6 @@ export default function LoginPage() {
     try {
       const body: VerifyOtpDto = { email: trimmedEmail, code: trimmedCode };
       const data = (await authControllerVerifyOtp({
-        client: apiClient,
         body,
         throwOnError: true,
       })) as unknown as { result: boolean; token?: string };

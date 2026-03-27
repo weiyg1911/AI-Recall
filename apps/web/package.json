@@ -6,7 +6,8 @@
     "start:dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:wrappers": "tsx scripts/generate-api-wrappers.ts"
   },
   "dependencies": {
     "@memorize/api-client": "workspace:*",

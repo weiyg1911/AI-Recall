@@ -9,8 +9,7 @@ import {
   authControllerVerifyOtp,
   type SendOtpDto,
   type VerifyOtpDto,
-} from '@memorize/api-client';
-import { apiClient } from '@/lib/api';
+} from '@/lib/api';
 import { getToken, setToken, clearToken } from '@/lib/auth';
 
 const btnStyle = {
@@ -47,7 +46,7 @@ export default function HealthPage() {
     setHealthResult(null);
     setLoading('health');
     try {
-      const result = await healthControllerCheckHealth({ client: apiClient });
+      const result = await healthControllerCheckHealth();
       setHealthResult(JSON.stringify(result, null, 2));
     } catch (e) {
       setError(e instanceof Error ? e.message : '请求失败');
@@ -61,7 +60,7 @@ export default function HealthPage() {
     setPingResult(null);
     setLoading('ping');
     try {
-      const result = await healthControllerPing({ client: apiClient });
+      const result = await healthControllerPing();
       setPingResult(typeof result === 'string' ? result : JSON.stringify(result));
     } catch (e) {
       setError(e instanceof Error ? e.message : '请求失败');
@@ -71,14 +70,11 @@ export default function HealthPage() {
   };
 
   const checkAuthTime = async () => {
-    const t = getToken();
     setError(null);
     setAuthTimeResult(null);
     setLoading('authTime');
     try {
       const result = await healthControllerGetServerTime({
-        client: apiClient,
-        ...(t ? { headers: { Authorization: `Bearer ${t}` } } : {}),
         throwOnError: true,
       });
       setAuthTimeResult(typeof result === 'string' ? result : JSON.stringify(result, null, 2));
@@ -106,7 +102,7 @@ export default function HealthPage() {
     setLoading('sendOtp');
     try {
       const body: SendOtpDto = { email: trimmed };
-      await authControllerSendOtp({ client: apiClient, body, throwOnError: true });
+      await authControllerSendOtp({ body, throwOnError: true });
       setCodeSent(true);
       setCountdown(60);
       const timer = setInterval(() => {
@@ -141,7 +137,6 @@ export default function HealthPage() {
     try {
       const body: VerifyOtpDto = { email: trimmedEmail, code: trimmedCode };
       const data = (await authControllerVerifyOtp({
-        client: apiClient,
         body,
         throwOnError: true,
       })) as unknown as { data: { result: boolean; token?: string } };
