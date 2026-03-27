@@ -144,10 +144,10 @@ export default function HealthPage() {
         client: apiClient,
         body,
         throwOnError: true,
-      })) as unknown as { result: boolean; token?: string };
-      if (data.result && data.token) {
-        setToken(data.token);
-        setTokenState(data.token);
+      })) as unknown as { data: { result: boolean; token?: string } };
+      if (data.data.result && data.data.token) {
+        setToken(data.data.token);
+        setTokenState(data.data.token);
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : '验证码错误或已过期');
