@@ -69,10 +69,12 @@ export default function KnowledgeListPage() {
   const fetchKnowledgeList = async (_page: number = 1) => {
     setLoading(true);
     try {
-      const response = (await knowledgeControllerGetKnowledgeList()) as unknown as Knowledge[];
-      setKnowledgeList(response || []);
+      const response = (await knowledgeControllerGetKnowledgeList()) as unknown as {
+        data: Knowledge[];
+      };
+      setKnowledgeList(response.data || []);
       setPagination({
-        total: response?.length || 0,
+        total: response.data?.length || 0,
         page: 1,
         pageSize: 10,
       });
