@@ -21,9 +21,7 @@
             }
           }
         },
-        "tags": [
-          "健康检查"
-        ]
+        "tags": ["健康检查"]
       }
     },
     "/health/ping": {
@@ -36,9 +34,7 @@
             "description": "返回 pong"
           }
         },
-        "tags": [
-          "健康检查"
-        ]
+        "tags": ["健康检查"]
       }
     },
     "/health/authTime": {
@@ -51,9 +47,7 @@
             "description": "返回服务器时间"
           }
         },
-        "tags": [
-          "健康检查"
-        ]
+        "tags": ["健康检查"]
       }
     },
     "/auth/send-otp": {
@@ -83,9 +77,7 @@
             "description": "返回验证码"
           }
         },
-        "tags": [
-          "认证"
-        ]
+        "tags": ["认证"]
       }
     },
     "/auth/verify-otp": {
@@ -116,9 +108,7 @@
             "description": "返回验证结果"
           }
         },
-        "tags": [
-          "认证"
-        ]
+        "tags": ["认证"]
       }
     },
     "/knowledge": {
@@ -130,9 +120,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "知识点管理"
-        ]
+        "tags": ["知识点管理"]
       }
     },
     "/knowledge/create": {
@@ -168,9 +156,37 @@
             "description": ""
           }
         },
-        "tags": [
-          "知识点管理"
-        ]
+        "tags": ["知识点管理"]
+      }
+    },
+    "/knowledge/delete": {
+      "post": {
+        "operationId": "KnowledgeController_delKnowledeg",
+        "summary": "删除知识点",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DelKnowledgeDto"
+              },
+              "examples": {
+                "example1": {
+                  "value": {
+                    "id": "123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["知识点管理"]
       }
     }
   },
@@ -196,20 +212,18 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "user@example.com",
+            "example": "sendOtpDto@example.com",
             "description": "邮箱地址"
           }
         },
-        "required": [
-          "email"
-        ]
+        "required": ["email"]
       },
       "VerifyOtpDto": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "example": "user@example.com",
+            "example": "VerifyOtpDto@example.com",
             "description": "邮箱地址"
           },
           "code": {
@@ -218,23 +232,34 @@
             "description": "验证码"
           }
         },
-        "required": [
-          "email",
-          "code"
-        ]
+        "required": ["email", "code"]
       },
       "CreateKnowledgeDto": {
         "type": "object",
         "properties": {
+          "title": {
+            "type": "string",
+            "example": "谚语",
+            "description": "知识点标题"
+          },
           "content": {
             "type": "string",
             "example": "不到长城非好汉",
-            "description": "知识点名称"
+            "description": "知识点内容"
           }
         },
-        "required": [
-          "content"
-        ]
+        "required": ["title", "content"]
+      },
+      "DelKnowledgeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "DelKnowledgeDto_id",
+            "description": "知识点id"
+          }
+        },
+        "required": ["id"]
       }
     }
   }

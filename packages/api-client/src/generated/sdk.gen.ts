@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses, KnowledgeControllerGetKnowledgeListData, KnowledgeControllerGetKnowledgeListResponses } from './types.gen';
+import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses, KnowledgeControllerDelKnowledegData, KnowledgeControllerDelKnowledegResponses, KnowledgeControllerGetKnowledgeListData, KnowledgeControllerGetKnowledgeListResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -64,6 +64,18 @@ export const knowledgeControllerGetKnowledgeList = <ThrowOnError extends boolean
  */
 export const knowledgeControllerCreateKnowledge = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerCreateKnowledgeData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerCreateKnowledgeResponses, unknown, ThrowOnError>({
     url: '/knowledge/create',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * 删除知识点
+ */
+export const knowledgeControllerDelKnowledeg = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerDelKnowledegData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerDelKnowledegResponses, unknown, ThrowOnError>({
+    url: '/knowledge/delete',
     ...options,
     headers: {
         'Content-Type': 'application/json',

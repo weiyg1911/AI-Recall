@@ -24,9 +24,20 @@ export type VerifyOtpDto = {
 
 export type CreateKnowledgeDto = {
     /**
-     * 知识点名称
+     * 知识点标题
+     */
+    title: string;
+    /**
+     * 知识点内容
      */
     content: string;
+};
+
+export type DelKnowledgeDto = {
+    /**
+     * 知识点id
+     */
+    id: string;
 };
 
 export type HealthControllerCheckHealthData = {
@@ -118,5 +129,16 @@ export type KnowledgeControllerCreateKnowledgeData = {
 };
 
 export type KnowledgeControllerCreateKnowledgeResponses = {
+    201: unknown;
+};
+
+export type KnowledgeControllerDelKnowledegData = {
+    body: DelKnowledgeDto;
+    path?: never;
+    query?: never;
+    url: '/knowledge/delete';
+};
+
+export type KnowledgeControllerDelKnowledegResponses = {
     201: unknown;
 };

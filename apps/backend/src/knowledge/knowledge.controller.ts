@@ -1,6 +1,6 @@
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { KnowledgeService } from './knowledge.service';
-import { CreateKnowledgeDto } from '@memorize/shared-types';
+import { CreateKnowledgeDto, DelKnowledgeDto } from '@memorize/shared-types';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
@@ -46,5 +46,23 @@ export class KnowledgeController {
   createKnowledge(@Req() req: AuthenticatedRequest, @Body() body: CreateKnowledgeDto) {
     const userId = req.user.userId;
     return this.knowledgeService.createKnowledge(body, userId);
+  }
+  @Post('delete')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '删除知识点' })
+  @ApiBody({
+    type: DelKnowledgeDto,
+    examples: {
+      example1: {
+        value: {
+          id: '123',
+        },
+      },
+    },
+  })
+  delKnowledeg(@Req() req: AuthenticatedRequest, @Body() delDto: DelKnowledgeDto) {
+    const useId = req.user.userId;
+    const { id } = delDto;
+    return this.knowledgeService.delKnowledge(id, useId);
   }
 }

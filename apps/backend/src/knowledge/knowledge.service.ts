@@ -98,4 +98,11 @@ export class KnowledgeService {
       throw err;
     }
   }
+
+  async delKnowledge(knowledgeId: string, useId: string) {
+    await this.knowledgeModel.find({
+      userId: useId,
+      knowledgeId: knowledgeId,
+    });
+  }
 }
