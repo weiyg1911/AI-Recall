@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { knowledgeControllerGetKnowledgeList } from '@/lib/api';
+import { knowledgeControllerGetKnowledgeList, knowledgeControllerDelKnowledeg } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { clearToken } from '@/lib/auth';
 
@@ -64,6 +64,7 @@ export default function KnowledgeListPage() {
     pageSize: 10,
   });
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // 获取知识点列表
   const fetchKnowledgeList = async (_page: number = 1) => {
@@ -125,6 +126,30 @@ export default function KnowledgeListPage() {
   // 处理编辑操作
   const handleEdit = (id: string) => {
     router.push(`/knowledge/edit/${id}`);
+  };
+
+  const handleDelete = async (id: string, title: string) => {
+    if (!window.confirm(`确定删除「${title || '未命名'}」？删除后无法恢复。`)) {
+      return;
+    }
+    setDeletingId(id);
+    try {
+      await knowledgeControllerDelKnowledeg({ body: { id } });
+      setKnowledgeList((prev) => prev.filter((k) => k.id !== id));
+      setPagination((prev) => ({
+        ...prev,
+        total: Math.max(0, prev.total - 1),
+      }));
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('401')) {
+        clearToken();
+        router.push('/login?redirect=' + encodeURIComponent('/knowledge'));
+        return;
+      }
+      window.alert(error instanceof Error ? error.message : '删除失败');
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   // 渲染分页按钮
@@ -314,7 +339,7 @@ export default function KnowledgeListPage() {
                 </div>
                 <div
                   className="text-sm font-semibold"
-                  style={{ width: '80px', color: 'var(--foreground)' }}
+                  style={{ width: '140px', color: 'var(--foreground)' }}
                 >
                   操作
                 </div>
@@ -345,12 +370,24 @@ export default function KnowledgeListPage() {
                   >
                     {new Date(knowledge.updatedAt).toLocaleString('zh-CN')}
                   </div>
-                  <div
-                    className="text-sm cursor-pointer hover:underline"
-                    style={{ width: '80px', color: 'var(--primary)' }}
-                    onClick={() => handleEdit(knowledge.id)}
-                  >
-                    编辑
+                  <div className="flex items-center gap-3 text-sm" style={{ width: '140px' }}>
+                    <button
+                      type="button"
+                      className="cursor-pointer hover:underline bg-transparent border-0 p-0"
+                      style={{ color: 'var(--primary)' }}
+                      onClick={() => handleEdit(knowledge.id)}
+                    >
+                      编辑
+                    </button>
+                    <button
+                      type="button"
+                      className="cursor-pointer hover:underline bg-transparent border-0 p-0 disabled:opacity-50"
+                      style={{ color: 'var(--destructive, #dc2626)' }}
+                      disabled={deletingId === knowledge.id}
+                      onClick={() => handleDelete(knowledge.id, knowledge.title)}
+                    >
+                      {deletingId === knowledge.id ? '删除中…' : '删除'}
+                    </button>
                   </div>
                 </div>
               ))}

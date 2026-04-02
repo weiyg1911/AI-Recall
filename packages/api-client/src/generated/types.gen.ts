@@ -40,6 +40,21 @@ export type DelKnowledgeDto = {
     id: string;
 };
 
+export type UpdateKnowledgeDto = {
+    /**
+     * 知识点 id
+     */
+    id: string;
+    /**
+     * 知识点标题
+     */
+    title?: string;
+    /**
+     * 知识点正文
+     */
+    content: string;
+};
+
 export type HealthControllerCheckHealthData = {
     body?: never;
     path?: never;
@@ -78,6 +93,20 @@ export type HealthControllerGetServerTimeData = {
 export type HealthControllerGetServerTimeResponses = {
     /**
      * 返回服务器时间
+     */
+    200: unknown;
+};
+
+export type HealthControllerErrorExceptionData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/health/errorException';
+};
+
+export type HealthControllerErrorExceptionResponses = {
+    /**
+     * 返回错误异常
      */
     200: unknown;
 };
@@ -129,6 +158,28 @@ export type KnowledgeControllerCreateKnowledgeData = {
 };
 
 export type KnowledgeControllerCreateKnowledgeResponses = {
+    201: unknown;
+};
+
+export type KnowledgeControllerGetKnowledgeDetailData = {
+    body: DelKnowledgeDto;
+    path?: never;
+    query?: never;
+    url: '/knowledge/detail';
+};
+
+export type KnowledgeControllerGetKnowledgeDetailResponses = {
+    201: unknown;
+};
+
+export type KnowledgeControllerUpdateKnowledgeData = {
+    body: UpdateKnowledgeDto;
+    path?: never;
+    query?: never;
+    url: '/knowledge/update';
+};
+
+export type KnowledgeControllerUpdateKnowledgeResponses = {
     201: unknown;
 };
 

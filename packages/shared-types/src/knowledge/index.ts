@@ -11,3 +11,12 @@ export class DelKnowledgeDto {
   @ApiProperty({ example: 'DelKnowledgeDto_id', description: '知识点id' })
   id!: string;
 }
+
+export class UpdateKnowledgeDto {
+  @ApiProperty({ example: '507f1f77bcf86cd799439011', description: '知识点 id' })
+  id!: string;
+  @ApiProperty({ example: '谚语', description: '知识点标题', required: false })
+  title?: string;
+  @ApiProperty({ example: '不到长城非好汉', description: '知识点正文' })
+  content!: string;
+}

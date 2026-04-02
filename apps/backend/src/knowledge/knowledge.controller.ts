@@ -1,6 +1,6 @@
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { KnowledgeService } from './knowledge.service';
-import { CreateKnowledgeDto, DelKnowledgeDto } from '@memorize/shared-types';
+import { CreateKnowledgeDto, DelKnowledgeDto, UpdateKnowledgeDto } from '@memorize/shared-types';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
@@ -47,6 +47,39 @@ export class KnowledgeController {
     const userId = req.user.userId;
     return this.knowledgeService.createKnowledge(body, userId);
   }
+
+  @Post('detail')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '知识点详情' })
+  @ApiBody({
+    type: DelKnowledgeDto,
+    examples: {
+      example1: { value: { id: '507f1f77bcf86cd799439011' } },
+    },
+  })
+  getKnowledgeDetail(@Req() req: AuthenticatedRequest, @Body() body: DelKnowledgeDto) {
+    return this.knowledgeService.getKnowledgeDetail(body.id, req.user.userId);
+  }
+
+  @Post('update')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '更新知识点' })
+  @ApiBody({
+    type: UpdateKnowledgeDto,
+    examples: {
+      example1: {
+        value: {
+          id: '507f1f77bcf86cd799439011',
+          title: '新标题',
+          content: '更新后的正文内容',
+        },
+      },
+    },
+  })
+  updateKnowledge(@Req() req: AuthenticatedRequest, @Body() body: UpdateKnowledgeDto) {
+    return this.knowledgeService.updateKnowledge(body, req.user.userId);
+  }
+
   @Post('delete')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '删除知识点' })

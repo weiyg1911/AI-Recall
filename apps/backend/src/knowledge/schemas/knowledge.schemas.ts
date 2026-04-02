@@ -47,12 +47,15 @@ export class Knowledge {
   title!: string;
 
   // 软删除标记（避免物理删除数据）
-  @Prop({ default: false })
-  isDeleted!: boolean;
+  @Prop({
+    type: Date,
+    default: null, // null 表示未删除
+  })
+  deletedAt!: Date | null;
 }
 
 export const KnowledgeSchema = SchemaFactory.createForClass(Knowledge);
 
 // 添加复合索引（优化查询），而不是使用单字索引
 // 1表示升序
-KnowledgeSchema.index({ userId: 1, isDeleted: 1 }); // 按用户+删除状态查询索引
+KnowledgeSchema.index({ userId: 1, deletedAt: 1 }); // 按用户+删除状态查询索引

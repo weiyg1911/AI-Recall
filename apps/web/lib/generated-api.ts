@@ -25,7 +25,10 @@ export const {
   authControllerSendOtp,
   authControllerVerifyOtp,
   knowledgeControllerGetKnowledgeList,
-  knowledgeControllerCreateKnowledge
+  knowledgeControllerCreateKnowledge,
+  knowledgeControllerGetKnowledgeDetail,
+  knowledgeControllerUpdateKnowledge,
+  knowledgeControllerDelKnowledeg,
 } = Object.fromEntries(
   Object.entries(ApiSDK).map(([name, fn]) => {
     if (typeof fn !== 'function') return [name, fn];

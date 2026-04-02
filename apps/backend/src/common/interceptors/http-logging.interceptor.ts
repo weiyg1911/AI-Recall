@@ -31,10 +31,10 @@ export class HttpLoggingInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap({
         next: (response) => {
-          this.winstonLogger.log('line 11 进入到http 日志拦截器' + JSON.stringify(response));
+          this.winstonLogger.log('' + JSON.stringify(response));
         },
         error: (error) => {
-          this.winstonLogger.error('line 15 error' + JSON.stringify(error));
+          this.winstonLogger.error('error:' + JSON.stringify(error));
         },
       }),
     );

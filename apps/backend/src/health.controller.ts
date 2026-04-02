@@ -38,4 +38,11 @@ export class HealthController {
   getServerTime() {
     return new Date().toISOString();
   }
+
+  @Get('errorException')
+  @ApiOperation({ summary: '测试错误异常' })
+  @ApiResponse({ status: 200, description: '返回错误异常' })
+  errorException() {
+    return new Error('测试错误异常');
+  }
 }

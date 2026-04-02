@@ -50,6 +50,19 @@
         "tags": ["健康检查"]
       }
     },
+    "/health/errorException": {
+      "get": {
+        "operationId": "HealthController_errorException",
+        "summary": "测试错误异常",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "返回错误异常"
+          }
+        },
+        "tags": ["健康检查"]
+      }
+    },
     "/auth/send-otp": {
       "post": {
         "operationId": "AuthController_sendOtp",
@@ -145,6 +158,68 @@
                 "example2": {
                   "value": {
                     "content": "title 可以为空"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["知识点管理"]
+      }
+    },
+    "/knowledge/detail": {
+      "post": {
+        "operationId": "KnowledgeController_getKnowledgeDetail",
+        "summary": "知识点详情",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DelKnowledgeDto"
+              },
+              "examples": {
+                "example1": {
+                  "value": {
+                    "id": "507f1f77bcf86cd799439011"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": ["知识点管理"]
+      }
+    },
+    "/knowledge/update": {
+      "post": {
+        "operationId": "KnowledgeController_updateKnowledge",
+        "summary": "更新知识点",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateKnowledgeDto"
+              },
+              "examples": {
+                "example1": {
+                  "value": {
+                    "id": "507f1f77bcf86cd799439011",
+                    "title": "新标题",
+                    "content": "更新后的正文内容"
                   }
                 }
               }
@@ -260,6 +335,27 @@
           }
         },
         "required": ["id"]
+      },
+      "UpdateKnowledgeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "507f1f77bcf86cd799439011",
+            "description": "知识点 id"
+          },
+          "title": {
+            "type": "string",
+            "example": "谚语",
+            "description": "知识点标题"
+          },
+          "content": {
+            "type": "string",
+            "example": "不到长城非好汉",
+            "description": "知识点正文"
+          }
+        },
+        "required": ["id", "content"]
       }
     }
   }

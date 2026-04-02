@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses, KnowledgeControllerDelKnowledegData, KnowledgeControllerDelKnowledegResponses, KnowledgeControllerGetKnowledgeListData, KnowledgeControllerGetKnowledgeListResponses } from './types.gen';
+import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerErrorExceptionData, HealthControllerErrorExceptionResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses, KnowledgeControllerDelKnowledegData, KnowledgeControllerDelKnowledegResponses, KnowledgeControllerGetKnowledgeDetailData, KnowledgeControllerGetKnowledgeDetailResponses, KnowledgeControllerGetKnowledgeListData, KnowledgeControllerGetKnowledgeListResponses, KnowledgeControllerUpdateKnowledgeData, KnowledgeControllerUpdateKnowledgeResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -32,6 +32,11 @@ export const healthControllerPing = <ThrowOnError extends boolean = false>(optio
  * 获取服务器时间
  */
 export const healthControllerGetServerTime = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerGetServerTimeData, ThrowOnError>) => (options?.client ?? client).get<HealthControllerGetServerTimeResponses, unknown, ThrowOnError>({ url: '/health/authTime', ...options });
+
+/**
+ * 测试错误异常
+ */
+export const healthControllerErrorException = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerErrorExceptionData, ThrowOnError>) => (options?.client ?? client).get<HealthControllerErrorExceptionResponses, unknown, ThrowOnError>({ url: '/health/errorException', ...options });
 
 /**
  * 发送验证码
@@ -64,6 +69,30 @@ export const knowledgeControllerGetKnowledgeList = <ThrowOnError extends boolean
  */
 export const knowledgeControllerCreateKnowledge = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerCreateKnowledgeData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerCreateKnowledgeResponses, unknown, ThrowOnError>({
     url: '/knowledge/create',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * 知识点详情
+ */
+export const knowledgeControllerGetKnowledgeDetail = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerGetKnowledgeDetailData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerGetKnowledgeDetailResponses, unknown, ThrowOnError>({
+    url: '/knowledge/detail',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * 更新知识点
+ */
+export const knowledgeControllerUpdateKnowledge = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerUpdateKnowledgeData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerUpdateKnowledgeResponses, unknown, ThrowOnError>({
+    url: '/knowledge/update',
     ...options,
     headers: {
         'Content-Type': 'application/json',
