@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { listenWithRetry } from './common/utils/port.utils';
 import { setupSwagger, generateOpenApiSpec } from './common/swagger';
 import { generateApiClient } from './common/api-client';
+import configuration from './common/config/configuration';
 
 async function bootstrap() {
   let app;
@@ -28,7 +29,7 @@ async function bootstrap() {
   generateApiClient();
 
   // 启动服务器
-  const port = 3002;
+  const port = configuration().port;
   await listenWithRetry(app, port);
   console.log(`Backend running at http://localhost:${port}`);
   console.log(`Swagger UI at http://localhost:${port}/api-docs`);

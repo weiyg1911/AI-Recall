@@ -1,23 +1,24 @@
+import {
+  dsModalApiKey,
+  jwtExpiresIn,
+  jwtSecret,
+  mailerConfig,
+  mongodbUri,
+  redisConfig,
+} from './utils';
+
 export default () => ({
-  mailer: {
-    host: process.env.MAILER_HOST,
-    port: parseInt(process.env.MAILER_PORT ?? '465', 10),
-    user: process.env.MAILER_USER,
-    pass: process.env.MAILER_PASS,
-  },
-  port: parseInt(process.env.PORT ?? '3000', 10),
+  mailer: mailerConfig(),
+  port: parseInt(process.env.PORT ?? '3002', 10),
   database: {
-    uri: process.env.MONGODB_URI,
+    uri: mongodbUri(),
   },
-  redis: {
-    host: process.env.REDIS_HOST,
-    port: parseInt(process.env.REDIS_PORT ?? '6379', 10),
-  },
+  redis: redisConfig(),
   jwt: {
-    secret: process.env.JWT_SECRET || 'secret',
-    expiresIn: process.env.JWT_EXPIRES_IN || '7d',
+    secret: jwtSecret(),
+    expiresIn: jwtExpiresIn(),
   },
   aiModal: {
-    apiKey: process.env.DS_Modal_API_KEY || '<your-ds-modal-api-key>',
+    apiKey: dsModalApiKey(),
   },
 });
