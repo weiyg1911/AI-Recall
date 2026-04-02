@@ -3,10 +3,9 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
-export class HttpWarpperInterceptor implements NestInterceptor {
+export class HttpWrapperInterceptor implements NestInterceptor {
   constructor() {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.debug('line HttpWarpperInterceptor');
     return next.handle().pipe(
       map((response) => {
         // 成功时包装
