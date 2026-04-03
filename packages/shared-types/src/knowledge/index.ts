@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PageResponseDto } from '../common';
 
 export class CreateKnowledgeDto {
   @ApiProperty({ example: '谚语', description: '知识点标题', required: false })
@@ -37,3 +38,5 @@ export class KnowledgeBaseResponseDto {
   @ApiProperty({ type: [KnowledgeInfoItemDto], description: '知识点结构化拆解内容' })
   infoList!: KnowledgeInfoItemDto[];
 }
+
+export class KnowledgeListResponseDto extends PageResponseDto<KnowledgeBaseResponseDto> {}

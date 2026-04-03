@@ -33,6 +33,36 @@ export type VerifyOtpResponseDto = {
     token?: string;
 };
 
+export type PageDto = {
+    /**
+     * 页码
+     */
+    page: number;
+    /**
+     * 每页数量
+     */
+    pageSize: number;
+};
+
+export type KnowledgeListResponseDto = {
+    /**
+     * 总数
+     */
+    total: number;
+    /**
+     * 当前页
+     */
+    page: number;
+    /**
+     * 每页数量
+     */
+    pageSize: number;
+    /**
+     * 数据
+     */
+    data: Array<string>;
+};
+
 export type CreateKnowledgeDto = {
     /**
      * 知识点标题
@@ -177,15 +207,20 @@ export type AuthControllerVerifyOtpResponses = {
 export type AuthControllerVerifyOtpResponse = AuthControllerVerifyOtpResponses[keyof AuthControllerVerifyOtpResponses];
 
 export type KnowledgeControllerGetKnowledgeListData = {
-    body?: never;
+    body: PageDto;
     path?: never;
     query?: never;
     url: '/knowledge';
 };
 
 export type KnowledgeControllerGetKnowledgeListResponses = {
-    201: unknown;
+    /**
+     * 返回分页的知识点列表
+     */
+    200: KnowledgeListResponseDto;
 };
+
+export type KnowledgeControllerGetKnowledgeListResponse = KnowledgeControllerGetKnowledgeListResponses[keyof KnowledgeControllerGetKnowledgeListResponses];
 
 export type KnowledgeControllerCreateKnowledgeData = {
     body: CreateKnowledgeDto;

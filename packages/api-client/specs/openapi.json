@@ -128,10 +128,28 @@
     "/knowledge": {
       "post": {
         "operationId": "KnowledgeController_getKnowledgeList",
+        "summary": "获取知识点列表",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PageDto"
+              }
+            }
+          }
+        },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "返回分页的知识点列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeListResponseDto"
+                }
+              }
+            }
           }
         },
         "tags": ["知识点管理"]
@@ -314,6 +332,51 @@
           }
         },
         "required": ["result"]
+      },
+      "PageDto": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "number",
+            "example": 1,
+            "description": "页码"
+          },
+          "pageSize": {
+            "type": "number",
+            "example": 10,
+            "description": "每页数量"
+          }
+        },
+        "required": ["page", "pageSize"]
+      },
+      "KnowledgeListResponseDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "example": 1,
+            "description": "总数"
+          },
+          "page": {
+            "type": "number",
+            "example": 10,
+            "description": "当前页"
+          },
+          "pageSize": {
+            "type": "number",
+            "example": 10,
+            "description": "每页数量"
+          },
+          "data": {
+            "example": [],
+            "description": "数据",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["total", "page", "pageSize", "data"]
       },
       "CreateKnowledgeDto": {
         "type": "object",

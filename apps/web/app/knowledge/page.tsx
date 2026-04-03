@@ -67,18 +67,21 @@ export default function KnowledgeListPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // 获取知识点列表
-  const fetchKnowledgeList = async (_page: number = 1) => {
+  const fetchKnowledgeList = async (_page: number = 1, _pageSize: number = pagination.pageSize) => {
     setLoading(true);
     try {
-      const response = (await knowledgeControllerGetKnowledgeList()) as unknown as {
-        data: Knowledge[];
+      const response = (await knowledgeControllerGetKnowledgeList({
+        body: { page: _page, pageSize: _pageSize },
+      })) as unknown as {
+        data: { list: Knowledge[]; total: number };
       };
-      setKnowledgeList(response.data || []);
-      setPagination({
-        total: response.data?.length || 0,
-        page: 1,
-        pageSize: 10,
-      });
+      setKnowledgeList(response.data?.list || []);
+      setPagination((prev) => ({
+        ...prev,
+        total: response.data?.total || 0,
+        page: _page,
+        pageSize: _pageSize,
+      }));
     } catch (error) {
       // 如果是认证错误，清除token并跳转到登录页
       if (error instanceof Error && error.message.includes('401')) {
@@ -104,7 +107,7 @@ export default function KnowledgeListPage() {
   // 处理每页条数变化
   const handlePageSizeChange = (pageSize: number) => {
     setPagination((prev) => ({ ...prev, pageSize, page: 1 }));
-    fetchKnowledgeList(1);
+    fetchKnowledgeList(1, pageSize);
   };
 
   // 处理刷新按钮点击

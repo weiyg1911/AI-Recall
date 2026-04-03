@@ -5,6 +5,8 @@ import {
   DelKnowledgeDto,
   UpdateKnowledgeDto,
   KnowledgeBaseResponseDto,
+  PageDto,
+  KnowledgeListResponseDto,
 } from '@memorize/shared-types';
 import { ApiBody, ApiOperation, ApiTags, ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
@@ -24,9 +26,15 @@ export class KnowledgeController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  getKnowledgeList(@Req() req: AuthenticatedRequest) {
+  @ApiOperation({ summary: '获取知识点列表' })
+  @ApiOkResponse({ description: '返回分页的知识点列表', type: KnowledgeListResponseDto })
+  @ApiBody({
+    type: PageDto,
+  })
+  getKnowledgeList(@Req() req: AuthenticatedRequest, @Body() body: PageDto) {
     const userId = req.user.userId;
-    return this.knowledgeService.getKnowledgeList(userId);
+    const { page, pageSize } = body;
+    return this.knowledgeService.getKnowledgeList(userId, page, pageSize);
   }
 
   @Post('create')

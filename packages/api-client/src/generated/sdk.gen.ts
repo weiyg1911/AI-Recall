@@ -66,7 +66,17 @@ export const authControllerVerifyOtp = <ThrowOnError extends boolean = false>(op
     }
 });
 
-export const knowledgeControllerGetKnowledgeList = <ThrowOnError extends boolean = false>(options?: Options<KnowledgeControllerGetKnowledgeListData, ThrowOnError>) => (options?.client ?? client).post<KnowledgeControllerGetKnowledgeListResponses, unknown, ThrowOnError>({ url: '/knowledge', ...options });
+/**
+ * 获取知识点列表
+ */
+export const knowledgeControllerGetKnowledgeList = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerGetKnowledgeListData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerGetKnowledgeListResponses, unknown, ThrowOnError>({
+    url: '/knowledge',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * 创建知识点

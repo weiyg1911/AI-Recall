@@ -52,12 +52,19 @@ export class KnowledgeService {
     };
   }
 
-  async getKnowledgeList(userId: string) {
-    const res = await this.knowledgeModel.find({
+  async getKnowledgeList(userId: string, page: number, pageSize: number) {
+    const filter = {
       userId,
       deletedAt: null,
-    });
-    return res;
+    };
+    const [list, total] = await Promise.all([
+      this.knowledgeModel
+        .find(filter)
+        .skip((page - 1) * pageSize)
+        .limit(pageSize),
+      this.knowledgeModel.countDocuments(filter),
+    ]);
+    return { list, total, page, pageSize };
   }
 
   async getKnowledgeDetail(knowledgeId: string, userId: string) {
