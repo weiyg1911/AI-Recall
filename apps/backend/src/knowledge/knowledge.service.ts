@@ -23,23 +23,32 @@ export class KnowledgeService {
     const aiRes = await chain.invoke({
       chatContent: str,
     });
-
+    console.log('aiRes', aiRes);
     return aiRes;
   }
 
   /** 将正文交给 AI，得到结构化 infoList 与标题 */
-  private async synthesizeKnowledgeFromRawContent(rawContent: string) {
+  private async synthesizeKnowledgeFromRawContent(rawContent: string, titleFromUser?: string) {
     const dsModal = this.aiService.getDSModal(0.7, 4000);
     const inputPrompts = PromptTemplate.fromTemplate(INPUT_KNOWLEDGE_PROMPT);
     const chain = inputPrompts.pipe(dsModal);
-    const [infoList, title] = await Promise.all([
-      chain.invoke({ inputKnowledge: rawContent }),
-      this.getKnowledgeTitle(rawContent),
-    ]);
+    let infoList: any;
+    let title: string;
+    if (titleFromUser) {
+      infoList = await chain.invoke({ inputKnowledge: rawContent });
+      title = titleFromUser;
+    } else {
+      const [infoListRes, titleRes] = await Promise.all([
+        chain.invoke({ inputKnowledge: rawContent }),
+        this.getKnowledgeTitle(rawContent),
+      ]);
+      infoList = infoListRes;
+      title = String((titleRes as { content?: string }).content ?? '');
+    }
     const parsed = JSON.parse(infoList.content as string);
     return {
       infoList: parsed as Knowledge['infoList'],
-      title: String((title as { content?: string }).content ?? ''),
+      title,
     };
   }
 
@@ -68,10 +77,15 @@ export class KnowledgeService {
 
   async createKnowledge(body: CreateKnowledgeDto, userId: string) {
     try {
-      const { infoList, title } = await this.synthesizeKnowledgeFromRawContent(body.content);
+      const { title: titleFromUser, content } = body;
+      const { infoList, title } = await this.synthesizeKnowledgeFromRawContent(
+        content,
+        titleFromUser,
+      );
+      console.log('title', title);
       const newItem = new this.knowledgeModel({
         userId: userId,
-        title,
+        title: titleFromUser ?? title,
         infoList,
       });
       await newItem.save();
@@ -97,11 +111,12 @@ export class KnowledgeService {
     if (!Types.ObjectId.isValid(body.id)) {
       throw new BadRequestException('无效的知识点 ID');
     }
-    const rawContent = body.title?.trim()
-      ? `# ${body.title.trim()}\n\n${body.content}`
-      : body.content;
+    const { title: titleFromUser, content } = body;
     try {
-      const { infoList, title } = await this.synthesizeKnowledgeFromRawContent(rawContent);
+      const { infoList, title } = await this.synthesizeKnowledgeFromRawContent(
+        content,
+        titleFromUser,
+      );
       const res = await this.knowledgeModel.updateOne(
         {
           _id: new Types.ObjectId(body.id),

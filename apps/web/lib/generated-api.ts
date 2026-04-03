@@ -22,13 +22,14 @@ export const {
   healthControllerCheckHealth,
   healthControllerPing,
   healthControllerGetServerTime,
+  healthControllerErrorException,
   authControllerSendOtp,
   authControllerVerifyOtp,
   knowledgeControllerGetKnowledgeList,
   knowledgeControllerCreateKnowledge,
   knowledgeControllerGetKnowledgeDetail,
   knowledgeControllerUpdateKnowledge,
-  knowledgeControllerDelKnowledeg,
+  knowledgeControllerDelKnowledge,
 } = Object.fromEntries(
   Object.entries(ApiSDK).map(([name, fn]) => {
     if (typeof fn !== 'function') return [name, fn];

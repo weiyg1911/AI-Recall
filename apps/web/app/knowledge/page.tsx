@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { knowledgeControllerGetKnowledgeList, knowledgeControllerDelKnowledeg } from '@/lib/api';
+import { knowledgeControllerGetKnowledgeList, knowledgeControllerDelKnowledge } from '@/lib/api';
 import { useAuth } from '@/lib/useAuth';
 import { clearToken } from '@/lib/auth';
 
@@ -134,7 +134,7 @@ export default function KnowledgeListPage() {
     }
     setDeletingId(id);
     try {
-      await knowledgeControllerDelKnowledeg({ body: { id } });
+      await knowledgeControllerDelKnowledge({ body: { id } });
       setKnowledgeList((prev) => prev.filter((k) => k.id !== id));
       setPagination((prev) => ({
         ...prev,

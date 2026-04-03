@@ -219,15 +219,6 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateKnowledgeDto"
-              },
-              "examples": {
-                "example1": {
-                  "value": {
-                    "id": "507f1f77bcf86cd799439011",
-                    "title": "新标题",
-                    "content": "更新后的正文内容"
-                  }
-                }
               }
             }
           }
@@ -251,13 +242,6 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DelKnowledgeDto"
-              },
-              "examples": {
-                "example1": {
-                  "value": {
-                    "id": "123"
-                  }
-                }
               }
             }
           }
