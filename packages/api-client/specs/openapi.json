@@ -236,7 +236,7 @@
     },
     "/knowledge/delete": {
       "post": {
-        "operationId": "KnowledgeController_delKnowledeg",
+        "operationId": "KnowledgeController_delKnowledge",
         "summary": "删除知识点",
         "parameters": [],
         "requestBody": {

@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerErrorExceptionData, HealthControllerErrorExceptionResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses, KnowledgeControllerDelKnowledegData, KnowledgeControllerDelKnowledegResponses, KnowledgeControllerGetKnowledgeDetailData, KnowledgeControllerGetKnowledgeDetailResponses, KnowledgeControllerGetKnowledgeListData, KnowledgeControllerGetKnowledgeListResponses, KnowledgeControllerUpdateKnowledgeData, KnowledgeControllerUpdateKnowledgeResponses } from './types.gen';
+import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerErrorExceptionData, HealthControllerErrorExceptionResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses, KnowledgeControllerDelKnowledgeData, KnowledgeControllerDelKnowledgeResponses, KnowledgeControllerGetKnowledgeDetailData, KnowledgeControllerGetKnowledgeDetailResponses, KnowledgeControllerGetKnowledgeListData, KnowledgeControllerGetKnowledgeListResponses, KnowledgeControllerUpdateKnowledgeData, KnowledgeControllerUpdateKnowledgeResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -103,7 +103,7 @@ export const knowledgeControllerUpdateKnowledge = <ThrowOnError extends boolean 
 /**
  * 删除知识点
  */
-export const knowledgeControllerDelKnowledeg = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerDelKnowledegData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerDelKnowledegResponses, unknown, ThrowOnError>({
+export const knowledgeControllerDelKnowledge = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerDelKnowledgeData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerDelKnowledgeResponses, unknown, ThrowOnError>({
     url: '/knowledge/delete',
     ...options,
     headers: {

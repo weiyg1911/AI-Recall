@@ -183,13 +183,13 @@ export type KnowledgeControllerUpdateKnowledgeResponses = {
     201: unknown;
 };
 
-export type KnowledgeControllerDelKnowledegData = {
+export type KnowledgeControllerDelKnowledgeData = {
     body: DelKnowledgeDto;
     path?: never;
     query?: never;
     url: '/knowledge/delete';
 };
 
-export type KnowledgeControllerDelKnowledegResponses = {
+export type KnowledgeControllerDelKnowledgeResponses = {
     201: unknown;
 };

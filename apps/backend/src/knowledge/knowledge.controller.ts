@@ -93,7 +93,7 @@ export class KnowledgeController {
       },
     },
   })
-  delKnowledeg(@Req() req: AuthenticatedRequest, @Body() delDto: DelKnowledgeDto) {
+  delKnowledge(@Req() req: AuthenticatedRequest, @Body() delDto: DelKnowledgeDto) {
     const useId = req.user.userId;
     const { id } = delDto;
     return this.knowledgeService.delKnowledge(id, useId);
