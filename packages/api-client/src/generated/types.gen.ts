@@ -6,31 +6,64 @@ export type ClientOptions = {
 
 export type SendOtpDto = {
     /**
-     * 邮箱地址
+     * 接收验证码的邮箱地址
      */
     email: string;
 };
 
 export type VerifyOtpDto = {
     /**
-     * 邮箱地址
+     * 需要登录或注册的邮箱地址
      */
     email: string;
     /**
-     * 验证码
+     * 邮箱收到的6位数验证码
      */
     code: string;
+};
+
+export type VerifyOtpResponseDto = {
+    /**
+     * 验证结果，true 代表验证成功
+     */
+    result: boolean;
+    /**
+     * 验证成功后派发的身份 Token
+     */
+    token?: string;
 };
 
 export type CreateKnowledgeDto = {
     /**
      * 知识点标题
      */
-    title: string;
+    title?: string;
     /**
      * 知识点内容
      */
     content: string;
+};
+
+export type KnowledgeInfoItemDto = {
+    /**
+     * 内容类型
+     */
+    type: 'text' | 'cloze';
+    /**
+     * 具体内容片段
+     */
+    content: string;
+};
+
+export type KnowledgeBaseResponseDto = {
+    /**
+     * 知识点标题
+     */
+    title: string;
+    /**
+     * 知识点结构化拆解内容
+     */
+    infoList: Array<KnowledgeInfoItemDto>;
 };
 
 export type DelKnowledgeDto = {
@@ -120,10 +153,12 @@ export type AuthControllerSendOtpData = {
 
 export type AuthControllerSendOtpResponses = {
     /**
-     * 返回验证码
+     * 是否成功发送邮件
      */
-    200: unknown;
+    200: boolean;
 };
+
+export type AuthControllerSendOtpResponse = AuthControllerSendOtpResponses[keyof AuthControllerSendOtpResponses];
 
 export type AuthControllerVerifyOtpData = {
     body: VerifyOtpDto;
@@ -134,10 +169,12 @@ export type AuthControllerVerifyOtpData = {
 
 export type AuthControllerVerifyOtpResponses = {
     /**
-     * 返回验证结果
+     * 验证结果及对应的身份 Token
      */
-    200: unknown;
+    200: VerifyOtpResponseDto;
 };
+
+export type AuthControllerVerifyOtpResponse = AuthControllerVerifyOtpResponses[keyof AuthControllerVerifyOtpResponses];
 
 export type KnowledgeControllerGetKnowledgeListData = {
     body?: never;
@@ -158,8 +195,13 @@ export type KnowledgeControllerCreateKnowledgeData = {
 };
 
 export type KnowledgeControllerCreateKnowledgeResponses = {
-    201: unknown;
+    /**
+     * 知识点创建成功
+     */
+    200: KnowledgeBaseResponseDto;
 };
+
+export type KnowledgeControllerCreateKnowledgeResponse = KnowledgeControllerCreateKnowledgeResponses[keyof KnowledgeControllerCreateKnowledgeResponses];
 
 export type KnowledgeControllerGetKnowledgeDetailData = {
     body: DelKnowledgeDto;

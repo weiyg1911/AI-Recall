@@ -40,6 +40,8 @@ export const healthControllerErrorException = <ThrowOnError extends boolean = fa
 
 /**
  * 发送验证码
+ *
+ * 向指定的邮箱发送注册登录相关的 6 位验证码
  */
 export const authControllerSendOtp = <ThrowOnError extends boolean = false>(options: Options<AuthControllerSendOtpData, ThrowOnError>) => (options.client ?? client).post<AuthControllerSendOtpResponses, unknown, ThrowOnError>({
     url: '/auth/send-otp',
@@ -52,6 +54,8 @@ export const authControllerSendOtp = <ThrowOnError extends boolean = false>(opti
 
 /**
  * 验证邮箱验证码
+ *
+ * 验证通过后将下发访问 Token
  */
 export const authControllerVerifyOtp = <ThrowOnError extends boolean = false>(options: Options<AuthControllerVerifyOtpData, ThrowOnError>) => (options.client ?? client).post<AuthControllerVerifyOtpResponses, unknown, ThrowOnError>({
     url: '/auth/verify-otp',
@@ -68,6 +72,7 @@ export const knowledgeControllerGetKnowledgeList = <ThrowOnError extends boolean
  * 创建知识点
  */
 export const knowledgeControllerCreateKnowledge = <ThrowOnError extends boolean = false>(options: Options<KnowledgeControllerCreateKnowledgeData, ThrowOnError>) => (options.client ?? client).post<KnowledgeControllerCreateKnowledgeResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
     url: '/knowledge/create',
     ...options,
     headers: {

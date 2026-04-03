@@ -67,6 +67,7 @@
       "post": {
         "operationId": "AuthController_sendOtp",
         "summary": "发送验证码",
+        "description": "向指定的邮箱发送注册登录相关的 6 位验证码",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -74,29 +75,30 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SendOtpDto"
-              },
-              "examples": {
-                "example1": {
-                  "value": {
-                    "email": "123@123.com"
-                  }
-                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "返回验证码"
+            "description": "是否成功发送邮件",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
           }
         },
-        "tags": ["认证"]
+        "tags": ["用户认证"]
       }
     },
     "/auth/verify-otp": {
       "post": {
         "operationId": "AuthController_verifyOtp",
         "summary": "验证邮箱验证码",
+        "description": "验证通过后将下发访问 Token",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -104,24 +106,23 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/VerifyOtpDto"
-              },
-              "examples": {
-                "example1": {
-                  "value": {
-                    "email": "123@123.com",
-                    "code": "123456"
-                  }
-                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "返回验证结果"
+            "description": "验证结果及对应的身份 Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyOtpResponseDto"
+                }
+              }
+            }
           }
         },
-        "tags": ["认证"]
+        "tags": ["用户认证"]
       }
     },
     "/knowledge": {
@@ -165,11 +166,23 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "知识点创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeBaseResponseDto"
+                }
+              }
+            }
           }
         },
-        "tags": ["知识点管理"]
+        "tags": ["知识点管理"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/knowledge/detail": {
@@ -183,13 +196,6 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/DelKnowledgeDto"
-              },
-              "examples": {
-                "example1": {
-                  "value": {
-                    "id": "507f1f77bcf86cd799439011"
-                  }
-                }
               }
             }
           }
@@ -287,8 +293,8 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "sendOtpDto@example.com",
-            "description": "邮箱地址"
+            "example": "test@example.com",
+            "description": "接收验证码的邮箱地址"
           }
         },
         "required": ["email"]
@@ -298,16 +304,32 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "VerifyOtpDto@example.com",
-            "description": "邮箱地址"
+            "example": "test@example.com",
+            "description": "需要登录或注册的邮箱地址"
           },
           "code": {
             "type": "string",
             "example": "123456",
-            "description": "验证码"
+            "description": "邮箱收到的6位数验证码"
           }
         },
         "required": ["email", "code"]
+      },
+      "VerifyOtpResponseDto": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "boolean",
+            "example": true,
+            "description": "验证结果，true 代表验证成功"
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJ...xxx",
+            "description": "验证成功后派发的身份 Token"
+          }
+        },
+        "required": ["result"]
       },
       "CreateKnowledgeDto": {
         "type": "object",
@@ -323,7 +345,42 @@
             "description": "知识点内容"
           }
         },
-        "required": ["title", "content"]
+        "required": ["content"]
+      },
+      "KnowledgeInfoItemDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "text",
+            "enum": ["text", "cloze"],
+            "description": "内容类型"
+          },
+          "content": {
+            "type": "string",
+            "example": "不到长城非好汉",
+            "description": "具体内容片段"
+          }
+        },
+        "required": ["type", "content"]
+      },
+      "KnowledgeBaseResponseDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "谚语",
+            "description": "知识点标题"
+          },
+          "infoList": {
+            "description": "知识点结构化拆解内容",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KnowledgeInfoItemDto"
+            }
+          }
+        },
+        "required": ["title", "infoList"]
       },
       "DelKnowledgeDto": {
         "type": "object",
