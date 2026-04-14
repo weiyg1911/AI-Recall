@@ -16,7 +16,8 @@ import { WinstonLoggerModule } from './common/logger/winston-logger.module';
 import * as winston from 'winston';
 
 import { HttpLoggingInterceptor } from './common/interceptors/http-logging.interceptor';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { GlobalExceptionFilter } from './common/filter/ExceptionFilter';
 import { LoggerName } from './common/logger/constants';
 import { HttpWrapperInterceptor } from './common/interceptors/http-wrapper.interceptor';
 
@@ -85,7 +86,12 @@ import { HttpWrapperInterceptor } from './common/interceptors/http-wrapper.inter
   controllers: [HealthController],
   providers: [
     {
-      // Http包装器
+      // 过滤器和拦截器的顺序不依赖providers里面的顺序，
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
+    {
+      // Http包装器，同为拦截器，则声明在前的先执行
       provide: APP_INTERCEPTOR,
       useClass: HttpWrapperInterceptor,
     },
