@@ -53,6 +53,8 @@ coverage
 *.generated.js
 *.generated.ts
 packages/api-client/src/generated
+# 后端 Swagger 写出，与 JSON.stringify 格式一致；勿经 Prettier 改写以免与重启后端后内容互相打架
+packages/api-client/specs/openapi.json
 
 # 其他
 .lock

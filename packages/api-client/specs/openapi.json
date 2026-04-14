@@ -21,7 +21,9 @@
             }
           }
         },
-        "tags": ["健康检查"]
+        "tags": [
+          "健康检查"
+        ]
       }
     },
     "/health/ping": {
@@ -34,7 +36,9 @@
             "description": "返回 pong"
           }
         },
-        "tags": ["健康检查"]
+        "tags": [
+          "健康检查"
+        ]
       }
     },
     "/health/authTime": {
@@ -47,7 +51,9 @@
             "description": "返回服务器时间"
           }
         },
-        "tags": ["健康检查"]
+        "tags": [
+          "健康检查"
+        ]
       }
     },
     "/health/errorException": {
@@ -60,7 +66,9 @@
             "description": "返回错误异常"
           }
         },
-        "tags": ["健康检查"]
+        "tags": [
+          "健康检查"
+        ]
       }
     },
     "/auth/send-otp": {
@@ -91,7 +99,9 @@
             }
           }
         },
-        "tags": ["用户认证"]
+        "tags": [
+          "用户认证"
+        ]
       }
     },
     "/auth/verify-otp": {
@@ -122,7 +132,9 @@
             }
           }
         },
-        "tags": ["用户认证"]
+        "tags": [
+          "用户认证"
+        ]
       }
     },
     "/knowledge": {
@@ -152,7 +164,9 @@
             }
           }
         },
-        "tags": ["知识点管理"]
+        "tags": [
+          "知识点管理"
+        ]
       }
     },
     "/knowledge/create": {
@@ -195,7 +209,9 @@
             }
           }
         },
-        "tags": ["知识点管理"],
+        "tags": [
+          "知识点管理"
+        ],
         "security": [
           {
             "bearer": []
@@ -223,7 +239,9 @@
             "description": ""
           }
         },
-        "tags": ["知识点管理"]
+        "tags": [
+          "知识点管理"
+        ]
       }
     },
     "/knowledge/update": {
@@ -246,7 +264,9 @@
             "description": ""
           }
         },
-        "tags": ["知识点管理"]
+        "tags": [
+          "知识点管理"
+        ]
       }
     },
     "/knowledge/delete": {
@@ -269,7 +289,9 @@
             "description": ""
           }
         },
-        "tags": ["知识点管理"]
+        "tags": [
+          "知识点管理"
+        ]
       }
     }
   },
@@ -299,7 +321,9 @@
             "description": "接收验证码的邮箱地址"
           }
         },
-        "required": ["email"]
+        "required": [
+          "email"
+        ]
       },
       "VerifyOtpDto": {
         "type": "object",
@@ -315,7 +339,10 @@
             "description": "邮箱收到的6位数验证码"
           }
         },
-        "required": ["email", "code"]
+        "required": [
+          "email",
+          "code"
+        ]
       },
       "VerifyOtpResponseDto": {
         "type": "object",
@@ -331,7 +358,9 @@
             "description": "验证成功后派发的身份 Token"
           }
         },
-        "required": ["result"]
+        "required": [
+          "result"
+        ]
       },
       "PageDto": {
         "type": "object",
@@ -347,7 +376,10 @@
             "description": "每页数量"
           }
         },
-        "required": ["page", "pageSize"]
+        "required": [
+          "page",
+          "pageSize"
+        ]
       },
       "KnowledgeListResponseDto": {
         "type": "object",
@@ -376,7 +408,12 @@
             }
           }
         },
-        "required": ["total", "page", "pageSize", "data"]
+        "required": [
+          "total",
+          "page",
+          "pageSize",
+          "data"
+        ]
       },
       "CreateKnowledgeDto": {
         "type": "object",
@@ -392,7 +429,9 @@
             "description": "知识点内容"
           }
         },
-        "required": ["content"]
+        "required": [
+          "content"
+        ]
       },
       "KnowledgeInfoItemDto": {
         "type": "object",
@@ -400,7 +439,10 @@
           "type": {
             "type": "string",
             "example": "text",
-            "enum": ["text", "cloze"],
+            "enum": [
+              "text",
+              "cloze"
+            ],
             "description": "内容类型"
           },
           "content": {
@@ -409,7 +451,10 @@
             "description": "具体内容片段"
           }
         },
-        "required": ["type", "content"]
+        "required": [
+          "type",
+          "content"
+        ]
       },
       "KnowledgeBaseResponseDto": {
         "type": "object",
@@ -427,7 +472,10 @@
             }
           }
         },
-        "required": ["title", "infoList"]
+        "required": [
+          "title",
+          "infoList"
+        ]
       },
       "DelKnowledgeDto": {
         "type": "object",
@@ -438,7 +486,9 @@
             "description": "知识点id"
           }
         },
-        "required": ["id"]
+        "required": [
+          "id"
+        ]
       },
       "UpdateKnowledgeDto": {
         "type": "object",
@@ -459,7 +509,10 @@
             "description": "知识点正文"
           }
         },
-        "required": ["id", "content"]
+        "required": [
+          "id",
+          "content"
+        ]
       }
     }
   }
