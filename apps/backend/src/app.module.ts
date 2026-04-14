@@ -10,6 +10,7 @@ import { RedisModule } from './redis/redis.module'; // 导入 RedisModule
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { KnowledgeModule } from './knowledge/konowledge.module';
+import { QuizModule } from './quiz/quiz.module';
 import { WinstonModule } from 'nest-winston';
 import { WinstonLoggerModule } from './common/logger/winston-logger.module';
 import * as winston from 'winston';
@@ -35,6 +36,7 @@ import { HttpWrapperInterceptor } from './common/interceptors/http-wrapper.inter
     RedisModule,
     AuthModule,
     KnowledgeModule,
+    QuizModule,
     ConfigModule.forRoot({
       load: [configuration], // 加载自定义配置
       isGlobal: true, // 可选，设为全局后无需在每个模块重复导入
