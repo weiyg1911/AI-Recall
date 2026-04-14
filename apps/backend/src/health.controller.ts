@@ -41,8 +41,8 @@ export class HealthController {
 
   @Get('errorException')
   @ApiOperation({ summary: '测试错误异常' })
-  @ApiResponse({ status: 200, description: '返回错误异常' })
+  @ApiResponse({ status: 500, description: '故意抛出错误，用于联调全局异常处理' })
   errorException() {
-    return new Error('测试错误异常');
+    throw new Error('测试错误异常');
   }
 }

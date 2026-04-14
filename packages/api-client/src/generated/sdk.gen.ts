@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerErrorExceptionData, HealthControllerErrorExceptionResponses, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses, KnowledgeControllerDelKnowledgeData, KnowledgeControllerDelKnowledgeResponses, KnowledgeControllerGetKnowledgeDetailData, KnowledgeControllerGetKnowledgeDetailResponses, KnowledgeControllerGetKnowledgeListData, KnowledgeControllerGetKnowledgeListResponses, KnowledgeControllerUpdateKnowledgeData, KnowledgeControllerUpdateKnowledgeResponses } from './types.gen';
+import type { AuthControllerSendOtpData, AuthControllerSendOtpResponses, AuthControllerVerifyOtpData, AuthControllerVerifyOtpResponses, HealthControllerCheckHealthData, HealthControllerCheckHealthResponses, HealthControllerErrorExceptionData, HealthControllerErrorExceptionErrors, HealthControllerGetServerTimeData, HealthControllerGetServerTimeResponses, HealthControllerPingData, HealthControllerPingResponses, KnowledgeControllerCreateKnowledgeData, KnowledgeControllerCreateKnowledgeResponses, KnowledgeControllerDelKnowledgeData, KnowledgeControllerDelKnowledgeResponses, KnowledgeControllerGetKnowledgeDetailData, KnowledgeControllerGetKnowledgeDetailResponses, KnowledgeControllerGetKnowledgeListData, KnowledgeControllerGetKnowledgeListResponses, KnowledgeControllerUpdateKnowledgeData, KnowledgeControllerUpdateKnowledgeResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -36,7 +36,7 @@ export const healthControllerGetServerTime = <ThrowOnError extends boolean = fal
 /**
  * 测试错误异常
  */
-export const healthControllerErrorException = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerErrorExceptionData, ThrowOnError>) => (options?.client ?? client).get<HealthControllerErrorExceptionResponses, unknown, ThrowOnError>({ url: '/health/errorException', ...options });
+export const healthControllerErrorException = <ThrowOnError extends boolean = false>(options?: Options<HealthControllerErrorExceptionData, ThrowOnError>) => (options?.client ?? client).get<unknown, HealthControllerErrorExceptionErrors, ThrowOnError>({ url: '/health/errorException', ...options });
 
 /**
  * 发送验证码

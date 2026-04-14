@@ -62,8 +62,8 @@
         "summary": "测试错误异常",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": "返回错误异常"
+          "500": {
+            "description": "故意抛出错误，用于联调全局异常处理"
           }
         },
         "tags": [

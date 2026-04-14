@@ -5,6 +5,7 @@ import {
   healthControllerCheckHealth,
   healthControllerPing,
   healthControllerGetServerTime,
+  healthControllerErrorException,
   authControllerSendOtp,
   authControllerVerifyOtp,
   type SendOtpDto,
@@ -25,9 +26,10 @@ const btnStyle = {
 export default function HealthPage() {
   const [healthResult, setHealthResult] = useState<string | null>(null);
   const [pingResult, setPingResult] = useState<string | null>(null);
+  const [errorExceptionResult, setErrorExceptionResult] = useState<string | null>(null);
   const [authTimeResult, setAuthTimeResult] = useState<string | null>(null);
   const [loading, setLoading] = useState<
-    'health' | 'ping' | 'authTime' | 'sendOtp' | 'login' | null
+    'health' | 'ping' | 'errorException' | 'authTime' | 'sendOtp' | 'login' | null
   >(null);
   const [error, setError] = useState<string | null>(null);
   const [token, setTokenState] = useState<string | null>(null);
@@ -64,6 +66,26 @@ export default function HealthPage() {
       setPingResult(typeof result === 'string' ? result : JSON.stringify(result));
     } catch (e) {
       setError(e instanceof Error ? e.message : '请求失败');
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const triggerErrorException = async () => {
+    setError(null);
+    setErrorExceptionResult(null);
+    setLoading('errorException');
+    try {
+      await healthControllerErrorException({ throwOnError: true });
+      setErrorExceptionResult('未抛出错误（不应出现）');
+    } catch (e) {
+      const msg =
+        e instanceof Error
+          ? e.message
+          : typeof e === 'object' && e !== null
+            ? JSON.stringify(e, null, 2)
+            : String(e);
+      setErrorExceptionResult(msg);
     } finally {
       setLoading(null);
     }
@@ -251,6 +273,18 @@ export default function HealthPage() {
           >
             {loading === 'ping' ? '检查中…' : 'Ping 检查'}
           </button>
+          <button
+            type="button"
+            onClick={triggerErrorException}
+            disabled={loading !== null}
+            style={{
+              ...btnStyle,
+              background: '#a30',
+              cursor: loading ? 'not-allowed' : 'pointer',
+            }}
+          >
+            {loading === 'errorException' ? '请求中…' : '触发 errorException'}
+          </button>
         </div>
       </section>
 
@@ -296,6 +330,23 @@ export default function HealthPage() {
             }}
           >
             {pingResult}
+          </pre>
+        </section>
+      )}
+      {errorExceptionResult != null && (
+        <section style={{ marginTop: 16 }}>
+          <h2 style={{ fontSize: 14, color: '#666', marginBottom: 8 }}>errorException 结果</h2>
+          <pre
+            style={{
+              background: '#fff4f0',
+              padding: 12,
+              borderRadius: 8,
+              overflow: 'auto',
+              fontSize: 14,
+              color: '#333',
+            }}
+          >
+            {errorExceptionResult}
           </pre>
         </section>
       )}

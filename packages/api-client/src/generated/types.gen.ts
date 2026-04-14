@@ -167,11 +167,11 @@ export type HealthControllerErrorExceptionData = {
     url: '/health/errorException';
 };
 
-export type HealthControllerErrorExceptionResponses = {
+export type HealthControllerErrorExceptionErrors = {
     /**
-     * 返回错误异常
+     * 故意抛出错误，用于联调全局异常处理
      */
-    200: unknown;
+    500: unknown;
 };
 
 export type AuthControllerSendOtpData = {
